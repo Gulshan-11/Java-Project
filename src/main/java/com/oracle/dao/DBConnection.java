@@ -5,10 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 @Component
 public class DBConnection {
-	@Value("${driver.Class}")
+	//@Value("${driver.Class}")
 	private  String driverClass="";
 public static void main(String[] args) {
 	//new DBConnection().connect();

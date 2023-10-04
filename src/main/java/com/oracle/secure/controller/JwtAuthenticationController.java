@@ -1,6 +1,10 @@
 package com.oracle.secure.controller;
 
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.authentication.AuthenticationManager;
@@ -10,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 //import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import com.oracle.dao.DBConnection;
 //import com.oracle.secure.config.JwtTokenUtil;
 //import com.oracle.secure.model.JwtRequest;
 //import com.oracle.secure.model.JwtResponse;
@@ -58,6 +63,23 @@ public class JwtAuthenticationController {
 //			throw new Exception("INVALID_CREDENTIALS", e);
 //		}
 //	}
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public boolean login(@RequestBody UserDto user) {
+		Connection con=new DBConnection().connect();
+		String sql="select * from emp where username=? and password=?";
+		try {
+			PreparedStatement ps=con.prepareStatement(sql);
+		    ps.setString(1, user.getUsername());
+		    ps.setString(2,user.getPassword());
+		    System.out.println("user present");
+		    
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+		
+	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {

@@ -1,5 +1,6 @@
 package com.oracle.entity;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Customer {
@@ -7,7 +8,7 @@ private String firstName;
 private String lastName;
 private String userName;
 private String custId;
-private LocalDate dob;
+private Date dob;
 private String email;
 private long phoneNo;
 private String occupation;
@@ -15,8 +16,8 @@ private String emp_type;
 private String gender;
 private long income;
 private int creditScore;
-private LocalDate regDate;
-private int accountStatus;
+private Date regDate;
+private String accountStatus;
 private String address;
 private String city;
 private String state;
@@ -46,10 +47,10 @@ public String getCustId() {
 public void setCustId(String custId) {
 	this.custId = custId;
 }
-public LocalDate getDob() {
+public Date getDob() {
 	return dob;
 }
-public void setDob(LocalDate dob) {
+public void setDob(Date dob) {
 	this.dob = dob;
 }
 public String getEmail() {
@@ -94,16 +95,16 @@ public int getCreditScore() {
 public void setCreditScore(int creditScore) {
 	this.creditScore = creditScore;
 }
-public LocalDate getRegDate() {
+public Date getRegDate() {
 	return regDate;
 }
-public void setRegDate(LocalDate regDate) {
+public void setRegDate(Date regDate) {
 	this.regDate = regDate;
 }
-public int getAccountStatus() {
+public String getAccountStatus() {
 	return accountStatus;
 }
-public void setAccountStatus(int accountStatus) {
+public void setAccountStatus(String accountStatus) {
 	this.accountStatus = accountStatus;
 }
 public String getAddress() {

@@ -1,5 +1,8 @@
 package com.oracle.secure.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class UserDto {
     private String username;
     private String password;

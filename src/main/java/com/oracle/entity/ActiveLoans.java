@@ -1,23 +1,24 @@
 package com.oracle.entity;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class ActiveLoans {
-private int loanId;
+private long loanId;
 private String type;
 private String programeName;
 private int roi;
 private int tenure;
 private long amountSanctioned;
-private LocalDate date;
+private Date date;
 private long amountPaid;
 private String approverName;
 private long emisPaid;
-public int getLoanId() {
+public long getLoanId() {
 	return loanId;
 }
-public void setLoanId(int loanId) {
-	this.loanId = loanId;
+public void setLoanId(long l) {
+	this.loanId = l;
 }
 public String getType() {
 	return type;
@@ -49,11 +50,11 @@ public long getAmountSanctioned() {
 public void setAmountSanctioned(long amountSanctioned) {
 	this.amountSanctioned = amountSanctioned;
 }
-public LocalDate getDate() {
+public Date getDate() {
 	return date;
 }
-public void setDate(LocalDate date) {
-	this.date = date;
+public void setDate(Date date2) {
+	this.date = date2;
 }
 public long getAmountPaid() {
 	return amountPaid;

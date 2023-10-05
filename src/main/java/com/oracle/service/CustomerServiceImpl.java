@@ -65,20 +65,16 @@ public class CustomerServiceImpl implements CustomerService {
 	
 
 	
-	public boolean insertNomineeDetails(Nominee ndata, String uName) {
+	public boolean insertNomineeDetails(Nominee ndata, String userId) {
 		// TODO Auto-generated method stub
 		DBConnection dbcon=new DBConnection();
 		Connection con=dbcon.connect();
 		
-		try {
-		
-			
-			
-		     String sql="insert into nominee values(?,nomineeseq.nextval,?,?,?,?) ";
+		try {					
+		     String sql="insert into nomineedetails values(?,nomineeseq.nextval,?,?,?,?) ";
 			PreparedStatement ps=con.prepareStatement(sql);
-
 		     ps=con.prepareStatement(sql);
-		     ps.setString(1, uName);
+		     ps.setString(1, userId);
 		     ps.setString(2, ndata.getName());
 		     ps.setLong(3, ndata.getPhoneNo());
 		     ps.setString(4, ndata.getRelationship());

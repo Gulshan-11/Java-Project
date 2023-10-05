@@ -167,10 +167,10 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 		
 	}
 	@RequestMapping(value="/ApplyLoan/{userName}" ,  method=RequestMethod.POST)//success tested
-   public void apply(@PathVariable String userName,@RequestBody Application data) {
+   public String apply(@PathVariable String userName,@RequestBody Application data) {
 		String cust_id=customerService.getCustomerId(userName);
 		customerService.saveApplicationData(cust_id,data);
-		
+		return "success";
 	}
 	@RequestMapping(value="/GetApplications/{userName}" ,  method=RequestMethod.GET)//success tested
      public  List<Application> myapplications(@PathVariable String userName) {
@@ -196,6 +196,7 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 	public List<Program> getPrograms(@PathVariable String prgmName) {
 		return customerService.getProgramNames(prgmName);
 	}
+	
 
 
 	

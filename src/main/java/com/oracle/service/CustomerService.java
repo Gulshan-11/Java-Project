@@ -9,6 +9,7 @@ import com.oracle.entity.ClerkCustomer;
 import com.oracle.entity.CompleteCustomerDetails;
 import com.oracle.entity.Customer;
 import com.oracle.entity.Nominee;
+import com.oracle.entity.Program;
 import com.oracle.entity.pdfDocument;
 
 public interface CustomerService {
@@ -22,4 +23,5 @@ public interface CustomerService {
 	public boolean cancelApplication(String applicatuion_id);
 	public long closeLoan(int loanId);
 	public Customer getCustomerDetails(String userName);
+	public List<Program> getProgramNames(String prgmType);
 }

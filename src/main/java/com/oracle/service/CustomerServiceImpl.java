@@ -18,6 +18,7 @@ import com.oracle.entity.ClerkCustomer;
 import com.oracle.entity.CompleteCustomerDetails;
 import com.oracle.entity.Customer;
 import com.oracle.entity.Nominee;
+import com.oracle.entity.Program;
 import com.oracle.entity.pdfDocument;
 @Component
 public class CustomerServiceImpl implements CustomerService {
@@ -344,6 +345,44 @@ public Customer getCustomerDetails(String userName) {
 	}
 
 	return custData;
+}
+
+
+
+
+@Override
+public List<Program> getProgramNames(String prgmType) {
+	// TODO Auto-generated method stub
+	DBConnection dbcon=new DBConnection();
+	Connection con=dbcon.connect();
+	List<Program> prgmDetails=prgmDetails=new ArrayList<>();
+	
+	String sql="select * from programdetails where loan_type=?";
+	try {
+		PreparedStatement ps=con.prepareStatement(sql);
+		ps.setString(1, prgmType);
+		ResultSet rs=ps.executeQuery();
+		while(rs.next()) {
+			Program p=new Program();
+			p.setLoanType(rs.getString("loan_type"));
+			p.setProgramName(rs.getString("program_name"));
+			p.setMin_amt(rs.getLong("min_amount"));
+			p.setMax_amt(rs.getLong("max_amount"));
+			p.setMin_tenure(rs.getLong("min_tenure"));
+			p.setMax_tenure(rs.getLong("max_tenure"));
+			p.setRoi(rs.getFloat("roi"));
+			p.setProgramDescription(rs.getString("program_desc"));
+			prgmDetails.add(p);
+			
+		}
+		
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	
+	return prgmDetails;
 }
 
 

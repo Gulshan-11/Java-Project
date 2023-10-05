@@ -7,7 +7,7 @@ public class Program {
 	private long max_amt;
 	private long min_tenure;
 	private long max_tenure;
-	private long roi;
+	private float roi;
 	private String programDescription;
 	public String getLoanType() {
 		return loanType;
@@ -45,10 +45,10 @@ public class Program {
 	public void setMax_tenure(long max_tenure) {
 		this.max_tenure = max_tenure;
 	}
-	public long getRoi() {
+	public float getRoi() {
 		return roi;
 	}
-	public void setRoi(long roi) {
+	public void setRoi(float roi) {
 		this.roi = roi;
 	}
 	public String getProgramDescription() {

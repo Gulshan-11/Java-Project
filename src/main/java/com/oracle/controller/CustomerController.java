@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -31,6 +32,7 @@ import com.oracle.entity.Program;
 import com.oracle.entity.pdfDocument;
 import com.oracle.service.CustomerService;
 @RestController
+@CrossOrigin
 public class CustomerController {
 
 	@Autowired
@@ -188,10 +190,15 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 		return customerService.closeLoan(loanId);
 		
 	}
+	
+	//loan programs by type
+	@RequestMapping(value="/ProgramNames/{prgmName}",method=RequestMethod.GET)
+	public List<Program> getPrograms(@PathVariable String prgmName) {
+		return customerService.getProgramNames(prgmName);
+	}
 
 
 	
-	//loan payment;
 	
 	
 	

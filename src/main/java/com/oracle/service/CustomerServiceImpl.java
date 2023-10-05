@@ -71,18 +71,18 @@ public class CustomerServiceImpl implements CustomerService {
 		Connection con=dbcon.connect();
 		
 		try {
-			String	sql="select customer_id from customer  where username=?";			
+		
+			
+			
+		     String sql="insert into nominee values(?,nomineeseq.nextval,?,?,?,?) ";
 			PreparedStatement ps=con.prepareStatement(sql);
-			ps.setString(1,uName );
-			ResultSet rs= ps.executeQuery();
-			int custId=rs.getInt(1);
-		     sql="insert into nominee values(?,nomineeseq.nextval,?,?,?,?) ";
+
 		     ps=con.prepareStatement(sql);
-		     ps.setInt(1, custId);
+		     ps.setString(1, uName);
 		     ps.setString(2, ndata.getName());
 		     ps.setLong(3, ndata.getPhoneNo());
 		     ps.setString(4, ndata.getRelationship());
-		     ps.setString(5, ndata.getRelationship());
+		     ps.setString(5, ndata.getAddress());
 		     ps.executeUpdate();
 			System.out.println("nominee details inserted");
 		} catch (SQLException e) {

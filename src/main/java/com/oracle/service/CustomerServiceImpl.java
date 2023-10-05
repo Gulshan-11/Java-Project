@@ -200,7 +200,6 @@ public boolean saveApplicationData(String custId, Application data) {
 		System.out.println(data.getApplicationId()+"    applyid");
 		ps.setString(3,data.getLoanType());
 		System.out.println(data.getLoanType()+"    type");
-
 		ps.setString(4, data.getProgramName());
 		ps.setInt(5, data.getApplicationStatus());
 		ps.setLong(6, data.getAmountRequested());

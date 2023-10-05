@@ -70,7 +70,7 @@ public class CustomerDaoimpl implements CustomerDao {
 					obj.setEmisPaid(rs.getInt("emis_paid"));
 					obj.setLoanId(rs.getLong("loan_id"));
 					obj.setProgrameName(rs.getString("programe_name"));
-					obj.setRoi(rs.getInt("roi"));
+					obj.setRoi(rs.getFloat("roi"));
 					obj.setTenure(rs.getInt("tenure"));
 					obj.setType(rs.getString("loan_type"));
 					loans.add(obj);

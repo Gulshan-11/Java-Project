@@ -3,6 +3,7 @@ package com.oracle.secure.controller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,20 +65,26 @@ public class JwtAuthenticationController {
 //		}
 //	}
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public boolean login(@RequestBody UserDto user) {
+	public String login(@RequestBody UserDto user) {
 		Connection con=new DBConnection().connect();
-		String sql="select * from emp where username=? and password=?";
+		String sql="select * from userdetails where username=? and password=?";
+		String role=null;
 		try {
 			PreparedStatement ps=con.prepareStatement(sql);
 		    ps.setString(1, user.getUsername());
 		    ps.setString(2,user.getPassword());
+		    ResultSet rs=ps.executeQuery();
+		    if(rs.next()) {
+		    	role=rs.getString("role");
+		    }
 		    System.out.println("user present");
+		    
 		    
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
+		return role;
 		
 	}
 	

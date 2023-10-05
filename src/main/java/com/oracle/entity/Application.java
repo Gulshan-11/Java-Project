@@ -1,14 +1,31 @@
 package com.oracle.entity;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Application {
 private String loanType;
+private String ApplicationId;
 private String programName;
 private int applicationStatus;
-private String  AmountRequested;
-private LocalDate applicationDate;
+private long  AmountRequested;
+private Date applicationDate;
 private String rejectReason;
+private float roi;
+private int tenure;
+
+public float getRoi() {
+	return roi;
+}
+public void setRoi(float roi) {
+	this.roi = roi;
+}
+public int getTenure() {
+	return tenure;
+}
+public void setTenure(int tenure) {
+	this.tenure = tenure;
+}
 public String getLoanType() {
 	return loanType;
 }
@@ -27,16 +44,16 @@ public int getApplicationStatus() {
 public void setApplicationStatus(int applicationStatus) {
 	this.applicationStatus = applicationStatus;
 }
-public String getAmountRequested() {
+public long getAmountRequested() {
 	return AmountRequested;
 }
-public void setAmountRequested(String amountRequested) {
+public void setAmountRequested(long amountRequested) {
 	AmountRequested = amountRequested;
 }
-public LocalDate getApplicationDate() {
+public Date getApplicationDate() {
 	return applicationDate;
 }
-public void setApplicationDate(LocalDate applicationDate) {
+public void setApplicationDate(Date applicationDate) {
 	this.applicationDate = applicationDate;
 }
 public String getRejectReason() {
@@ -45,6 +62,11 @@ public String getRejectReason() {
 public void setRejectReason(String rejectReason) {
 	this.rejectReason = rejectReason;
 }
-
+public String getApplicationId() {
+	return ApplicationId;
+}
+public void setApplicationId(String applicationId) {
+	ApplicationId = applicationId;
+}
 
 }

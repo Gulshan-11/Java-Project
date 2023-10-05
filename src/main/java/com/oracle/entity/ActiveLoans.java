@@ -7,7 +7,7 @@ public class ActiveLoans {
 private long loanId;
 private String type;
 private String programeName;
-private int roi;
+private float roi;
 private int tenure;
 private long amountSanctioned;
 private Date date;
@@ -32,10 +32,10 @@ public String getProgrameName() {
 public void setProgrameName(String programeName) {
 	this.programeName = programeName;
 }
-public int getRoi() {
+public float getRoi() {
 	return roi;
 }
-public void setRoi(int roi) {
+public void setRoi(float roi) {
 	this.roi = roi;
 }
 public int getTenure() {

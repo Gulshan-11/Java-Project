@@ -5,12 +5,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.oracle.dao.DBConnection;
+import com.oracle.entity.Application;
 import com.oracle.entity.ClerkCustomer;
 import com.oracle.entity.CompleteCustomerDetails;
 import com.oracle.entity.Customer;
@@ -169,11 +172,11 @@ public class CustomerServiceImpl implements CustomerService {
 
 
 @Override
-public int getCustomerId(String userName) {
+public String getCustomerId(String userName) {
 	
 	DBConnection dbcon=new DBConnection();
 	Connection con=dbcon.connect();
-	int custId=0;
+	String custId=null;
 	String sql="select customer_id from customerdetails  where username=?";			
 	PreparedStatement ps;
 	try {
@@ -181,13 +184,103 @@ public int getCustomerId(String userName) {
 		ps.setString(1,userName );
 		ResultSet rs= ps.executeQuery();
 		rs.next();
-		 custId=rs.getInt(1);
+		 custId=rs.getString(1);
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	
 		return custId;
+}
+
+
+
+
+@Override
+public boolean saveApplicationData(String custId, Application data) {
+	DBConnection dbcon=new DBConnection();
+	Connection con=dbcon.connect();
+	String sql="insert into loanapplication values(?,?,?,?,?,?,?,?,?,?)";
+	try {
+		PreparedStatement ps=con.prepareStatement(sql);
+		ps.setString(1, custId);
+		ps.setString(2, data.getApplicationId());
+		System.out.println(data.getApplicationId()+"    applyid");
+		ps.setString(3,data.getLoanType());
+		System.out.println(data.getLoanType()+"    type");
+
+		ps.setString(4, data.getProgramName());
+		ps.setInt(5, data.getApplicationStatus());
+		ps.setLong(6, data.getAmountRequested());
+		ps.setDate(7,data.getApplicationDate());
+		ps.setString(8, data.getRejectReason());
+		ps.setFloat(9, data.getRoi());
+		ps.setInt(10, data.getTenure());
+		ps.executeUpdate();
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	
+	return true;
+}
+
+
+
+
+@Override
+public List<Application> getAppllicationsById(String custId) {
+	// TODO Auto-generated method stub
+	DBConnection dbcon=new DBConnection();
+	Connection con=dbcon.connect();
+	String sql="select * from loanapplication where customer_id=? and Application_status!=0";
+	List<Application> applicationData=new ArrayList<>();
+	try {
+		PreparedStatement ps=con.prepareStatement(sql);
+		ps.setString(1, custId);
+		ResultSet rs=ps.executeQuery();
+		while(rs.next()) {
+			Application obj=new Application();
+			obj.setApplicationId(rs.getString("application_id"));
+			obj.setLoanType(rs.getString("loan_type"));
+			obj.setProgramName(rs.getString("program_name"));
+			obj.setApplicationStatus(rs.getInt("Application_status"));
+			obj.setAmountRequested(rs.getInt("amount_requested"));
+			obj.setApplicationDate(rs.getDate("application_date"));
+			obj.setRejectReason(rs.getString("reject_reason"));
+			obj.setRoi(rs.getFloat("roi"));
+			obj.setTenure(rs.getInt("tenure"));
+			applicationData.add(obj);
+			
+		}
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+	
+	return applicationData;
+}
+
+
+
+
+public boolean cancelApplication(String application_id) {
+	// TODO Auto-generated method stub
+	DBConnection dbcon=new DBConnection();
+	Connection con=dbcon.connect();
+	String sql="update loanapplication set Application_status=0 where application_id=? ";
+	try {
+		PreparedStatement ps=con.prepareStatement(sql);
+		ps.setString(1, application_id);
+		ps.executeUpdate();
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+	return true;
 }
 
 

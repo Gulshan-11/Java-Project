@@ -1,7 +1,10 @@
 package com.oracle.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
+import com.oracle.entity.Application;
 import com.oracle.entity.ClerkCustomer;
 import com.oracle.entity.CompleteCustomerDetails;
 import com.oracle.entity.Customer;
@@ -13,6 +16,9 @@ public interface CustomerService {
 	public boolean insertNomineeDetails(CompleteCustomerDetails ndata,String uName);
 	public boolean saveDocument(pdfDocument docData);
 	public boolean addNewCustomerDetails(ClerkCustomer cdata);
-	public int getCustomerId(String userName);
+	public String getCustomerId(String userName);
+	public boolean saveApplicationData(String custId ,Application data);
+	public List<Application> getAppllicationsById(String custId);
+	public boolean cancelApplication(String applicatuion_id);
 	
 }

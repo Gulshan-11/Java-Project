@@ -22,6 +22,7 @@ import com.oracle.dao.ApplyDetails;
 import com.oracle.dao.CustomerDao;
 import com.oracle.dao.DBConnection;
 import com.oracle.entity.ActiveLoans;
+import com.oracle.entity.Application;
 import com.oracle.entity.ClerkCustomer;
 import com.oracle.entity.CompleteCustomerDetails;
 import com.oracle.entity.Customer;
@@ -42,7 +43,7 @@ public class CustomerController {
 	public List<ActiveLoans> getDetails(@RequestBody String userName ){
 		return custdao.getLoanDetails(userName);
 	}
-	@RequestMapping(value="/ApplyLoan/{userName}" ,  method=RequestMethod.POST)
+	@RequestMapping(value="/SaveDetails/{userName}" ,  method=RequestMethod.POST)
 	//@RequestBody MultipartFile[] file
 	public void apply(@PathVariable String userName,@RequestBody CompleteCustomerDetails details) {
 		
@@ -73,7 +74,7 @@ public class CustomerController {
 	}
 	@RequestMapping(value="/searchByLoanId/{userName}",method=RequestMethod.GET)
 	public ActiveLoans searchbyLoanId(@PathVariable String userName,@RequestBody int loanId ) {
-		int cust_id=customerService.getCustomerId(userName);
+		String cust_id=customerService.getCustomerId(userName);
 		DBConnection dbcon=new DBConnection();
 		Connection con=dbcon.connect();
 		String	sql="select * from ActiveLoans where loan_id=? ";
@@ -103,7 +104,7 @@ public class CustomerController {
 	}
 	@RequestMapping(value="/searchByLoanType/{userName}",method=RequestMethod.GET)
 	public ActiveLoans searchbyLoanType(@PathVariable String userName,@RequestBody String type ) {
-		int cust_id=customerService.getCustomerId(userName);
+		String cust_id=customerService.getCustomerId(userName);
 		DBConnection dbcon=new DBConnection();
 		Connection con=dbcon.connect();
 		String	sql="select * from ActiveLoans where loan_type=? ";
@@ -132,9 +133,9 @@ public class CustomerController {
 		
 	}
 	
-	@RequestMapping(value="/searchByLoanType/{userName}",method=RequestMethod.GET)
+	@RequestMapping(value="/searchByLoanDate/{userName}",method=RequestMethod.GET)//date
 	public ActiveLoans searchbyLoanDate(@PathVariable String userName,@RequestBody Date date ) {
-		int cust_id=customerService.getCustomerId(userName);
+		String cust_id=customerService.getCustomerId(userName);
 		DBConnection dbcon=new DBConnection();
 		Connection con=dbcon.connect();
 		String	sql="select * from ActiveLoans where start_date=? ";
@@ -162,10 +163,28 @@ public class CustomerController {
 		return loandata;
 		
 	}
+	@RequestMapping(value="/ApplyLoan/{userName}" ,  method=RequestMethod.POST)//success tested
+   public void apply(@PathVariable String userName,@RequestBody Application data) {
+		String cust_id=customerService.getCustomerId(userName);
+		customerService.saveApplicationData(cust_id,data);
+		
+	}
+	@RequestMapping(value="/GetApplications/{userName}" ,  method=RequestMethod.GET)//success tested
+     public  List<Application> myapplications(@PathVariable String userName) {
+		String cust_id=customerService.getCustomerId(userName);
+		return customerService.getAppllicationsById(cust_id);
+
+		
+	}
+	@RequestMapping(value="/ApplicationClose/{applyid}" ,  method=RequestMethod.POST)//success tested
+	public void CloseApplication(@PathVariable String applyid) {
+		
+		customerService.cancelApplication(applyid);
+	}
+
 	
-//	closeLoan(username,loanId);
-//	applicationDetails(username);
-//	applyLoan();
+
+
 	
 
 	

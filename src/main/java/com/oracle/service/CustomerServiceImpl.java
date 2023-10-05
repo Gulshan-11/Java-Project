@@ -190,11 +190,18 @@ public boolean saveApplicationData(String custId, Application data) {
 	DBConnection dbcon=new DBConnection();
 	Connection con=dbcon.connect();
 	String applicationNumber = UUID.randomUUID().toString();
+	String sql="select * from activeloans where loan_type=? and customer_id=? and loan_status!=0";
 	
 	
-	String sql="insert into loanapplication values(?,?,?,?,?,?,?,?,?,?)";
+	 
 	try {
 		PreparedStatement ps=con.prepareStatement(sql);
+		ps.setString(1,data.getLoanType() );
+		ps.setString(2, custId);
+		ResultSet rs=ps.executeQuery();
+		if(rs.next())return false;
+		sql="insert into loanapplication values(?,?,?,?,?,?,?,?,?,?)";
+		ps=con.prepareStatement(sql);
 		ps.setString(1, custId);
 		ps.setString(2, applicationNumber);
 		System.out.println(data.getApplicationId()+"    applyid");

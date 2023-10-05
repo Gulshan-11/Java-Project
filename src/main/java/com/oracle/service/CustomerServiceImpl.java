@@ -1,5 +1,5 @@
 package com.oracle.service;
-
+import java.util.UUID;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,54 +23,42 @@ import com.oracle.entity.pdfDocument;
 public class CustomerServiceImpl implements CustomerService {
 
 	
-	 public boolean insertCustomerDetails(CompleteCustomerDetails cdata,String uName ) {
+	 public String insertCustomerDetails(Customer cdata,String uName ) {
 	    	DBConnection dbcon=new DBConnection();
 			Connection con=dbcon.connect();
-			String sql="insert into customerdetails values(?,custseq.nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			String sql="insert into customerdetails values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			String custId = UUID.randomUUID().toString();		
 			
 			try {
 				PreparedStatement ps=con.prepareStatement(sql);
 				ps.setString(1,uName);
-				ps.setString(2,cdata.getFirstName());
-				ps.setString(3,cdata.getLastName());
-				ps.setDate(4, cdata.getDob());
-				ps.setString(5, cdata.getEmail());
-				ps.setLong(6,cdata.getPhoneNo());
-				ps.setString(7, cdata.getOccupation());
-				ps.setString(8, cdata.getEmp_type());
-				ps.setString(9, cdata.getGender());
-				ps.setLong(10, cdata.getIncome());
-				ps.setInt(11,cdata.getCreditScore());
-				ps.setDate(12,cdata.getRegDate());
-				ps.setString(13, cdata.getAccountStatus());
-				ps.setString(14,cdata.getAddress());
-				ps.setString(15,cdata.getCity());
-				ps.setString(16, cdata.getState());
-				ps.setString(17, cdata.getCountry());
-				ps.setInt(18,cdata.getPincode());
+				ps.setString(2, custId);
+				ps.setString(3,cdata.getFirstName());
+				ps.setString(4,cdata.getLastName());
+				ps.setDate(5,cdata.getDob());
+				ps.setString(6, cdata.getEmail());
+				ps.setLong(7,cdata.getPhoneNo());
+				ps.setString(8, cdata.getOccupation());
+				ps.setString(9, cdata.getEmp_type());
+				ps.setString(10, cdata.getGender());
+				ps.setLong(11, cdata.getIncome());
+				ps.setInt(12,cdata.getCreditScore());
+				ps.setDate(13,cdata.getRegDate());
+				ps.setString(14, cdata.getAccountStatus());
+				ps.setString(15,cdata.getAddress());
+				ps.setString(16,cdata.getCity());
+				ps.setString(17, cdata.getState());
+				ps.setString(18, cdata.getCountry());
+				ps.setInt(19,cdata.getPincode());
 	            ps.executeUpdate();
-	            System.out.println("cust details added");
-	           	sql="select customer_id from customerdetails  where username=?";			
-				ps=con.prepareStatement(sql);
-				ps.setString(1,uName );
-				ResultSet rs= ps.executeQuery();
-				rs.next();
-				int custId=rs.getInt(1);
-			     sql="insert into nomineedetails values(?,nomineeseq.nextval,?,?,?,?) ";
-			     ps=con.prepareStatement(sql);
-			     ps.setInt(1, custId);
-			     ps.setString(2, cdata.getNomineeName());
-			     ps.setLong(3, cdata.getNomineePhoneNo());
-			     ps.setString(4, cdata.getRelationship());
-			     ps.setString(5, cdata.getNomineeAddress());
-			     ps.executeUpdate();
-				System.out.println("nominee details inserted");
+	            System.out.println("cust details added");         
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return "failed";
 			}
-			return true;
+			return "success";
 	    }
 
 	
@@ -281,6 +269,81 @@ public boolean cancelApplication(String application_id) {
 	}
 
 	return true;
+}
+
+
+
+
+@Override
+public long closeLoan(int loanId) {
+	// TODO Auto-generated method stub
+	long paidAmount=0;
+	long amountSanctioned=-1;
+	DBConnection dbcon=new DBConnection();
+	Connection con=dbcon.connect();
+	String sql="select amount_paid,amount_sanctioned from activeloans where  loan_id= ?";
+	try {
+		PreparedStatement ps=con.prepareStatement(sql);
+		ps.setInt(1, loanId);
+		ResultSet rs=ps.executeQuery();
+		if(rs.next()) {
+			 paidAmount=rs.getLong("amount_paid");
+			 amountSanctioned=rs.getLong("amount_sanctioned");
+			if(paidAmount==amountSanctioned) {
+				sql="update activeloans set loan_status=0 where loan_id= ?";
+			    ps=con.prepareStatement(sql);
+				ps.setInt(1, loanId);
+				ps.executeUpdate();
+				return 0;}
+		}
+		
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+ return amountSanctioned-paidAmount;
+}
+
+
+
+
+@Override
+public Customer getCustomerDetails(String userName) {
+	// TODO Auto-generated method stub
+	DBConnection dbcon=new DBConnection();
+	Connection con=dbcon.connect();
+	String sql="select * from customerdetails where username=?";
+	Customer custData=null;
+	try {
+		PreparedStatement ps=con.prepareStatement(sql);
+		ps.setString(1, userName);
+		ResultSet rs=ps.executeQuery();
+		if(rs.next()) {
+			custData=new Customer();
+			custData.setFirstName(rs.getString("first_name"));
+			custData.setLastName(rs.getString("last_name"));
+			custData.setDob(rs.getDate("dob"));
+			custData.setEmail(rs.getString("email_id"));
+			custData.setPhoneNo(rs.getLong("phone_no"));
+			custData.setOccupation(rs.getString("occupation"));
+			custData.setEmp_type(rs.getString("emp_type"));
+			custData.setGender(rs.getString("gender"));
+			custData.setIncome(rs.getLong("income"));
+			custData.setCreditScore(rs.getInt("credit_score"));
+			custData.setRegDate(rs.getDate("registered_date"));
+			custData.setAccountStatus(rs.getString("account_status"));
+			custData.setAddress(rs.getString("address"));
+			custData.setCity(rs.getString("city"));
+			custData.setState(rs.getString("state_name"));
+			custData.setCountry(rs.getString("country"));
+			custData.setPincode(rs.getInt("pincode"));
+		}
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+	return custData;
 }
 
 

@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oracle.dao.DBConnection;
 import com.oracle.entity.Application;
 @Component
@@ -65,6 +66,8 @@ public boolean approveLoan(String username,String applyid) {
         rs.next();
         String managerName=rs.getString("first_name");
         System.out.println("feteched first name");
+       //String appId=new ObjectMapper().readValue(applyid, "String");
+ 
         System.out.println("apply id"+ applyid);
 		sql="select * from loanapplication where application_id=? ";
 		ps=con.prepareStatement(sql);
@@ -73,7 +76,7 @@ public boolean approveLoan(String username,String applyid) {
 	     System.out.println("loan applicaion executed");
 	    
 		if(rs.next()) {
-			sql="insert into activeloans values(?,?,?,?,SYSDATE,?,loanidSeq.nextval,?,?,?,?)";
+			sql="insert into activeloans values(?,?,?,?,SYSDATE,?,loanidSeq.nextval,?,?,?,?,?)";
 			ps=con.prepareStatement(sql);
 			ps.setString(1,rs.getString("customer_id"));
 			ps.setInt(2, 0);
@@ -84,6 +87,7 @@ public boolean approveLoan(String username,String applyid) {
 			ps.setFloat(7,rs.getFloat("roi"));
 			ps.setInt(8,rs.getInt("tenure"));
 			ps.setString(9,rs.getString("loan_type"));
+			ps.setInt(10, 1);
 	        ps.executeUpdate();	
 	        System.out.println("inserted into activeloans");
 		}

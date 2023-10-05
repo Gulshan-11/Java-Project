@@ -14,6 +14,7 @@ private Date date;
 private long amountPaid;
 private String approverName;
 private long emisPaid;
+//private 
 public long getLoanId() {
 	return loanId;
 }

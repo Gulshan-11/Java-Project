@@ -12,7 +12,7 @@ import com.oracle.entity.Nominee;
 import com.oracle.entity.pdfDocument;
 
 public interface CustomerService {
-	public boolean insertCustomerDetails(CompleteCustomerDetails cdata,String uName );
+	public String insertCustomerDetails(Customer cdata,String uName );
 	public boolean insertNomineeDetails(CompleteCustomerDetails ndata,String uName);
 	public boolean saveDocument(pdfDocument docData);
 	public boolean addNewCustomerDetails(ClerkCustomer cdata);
@@ -20,5 +20,6 @@ public interface CustomerService {
 	public boolean saveApplicationData(String custId ,Application data);
 	public List<Application> getAppllicationsById(String custId);
 	public boolean cancelApplication(String applicatuion_id);
-	
+	public long closeLoan(int loanId);
+	public Customer getCustomerDetails(String userName);
 }

@@ -27,7 +27,7 @@ public class CustomerDaoimpl implements CustomerDao {
 		// TODO Auto-generated method stub
 		DBConnection dbcon=new DBConnection();
 		Connection con=dbcon.connect();
-		String sql="";
+		String sql="select ";
 		try {
 			PreparedStatement ps=con.prepareStatement(null);
 		} catch (SQLException e) {

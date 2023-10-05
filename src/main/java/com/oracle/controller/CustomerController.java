@@ -39,15 +39,20 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerService customerService;
+	
 	@RequestMapping(value="/loandetails" ,  method=RequestMethod.GET)
-	public List<ActiveLoans> getDetails(@RequestBody String userName ){
+	public List<ActiveLoans> getDetailsOfLoan(@RequestBody String userName ){
 		return custdao.getLoanDetails(userName);
 	}
+@RequestMapping(value="/MyDetails/{userName}",method=RequestMethod.POST)
+public Customer getDetailsOfCustomer(@PathVariable String userName) {
+	 return customerService.getCustomerDetails(userName);
+}
 	@RequestMapping(value="/SaveDetails/{userName}" ,  method=RequestMethod.POST)
 	//@RequestBody MultipartFile[] file
-	public void apply(@PathVariable String userName,@RequestBody CompleteCustomerDetails details) {
+	public String apply(@PathVariable String userName,@RequestBody Customer details) {
 		
-		customerService.insertCustomerDetails(details,userName);
+		return customerService.insertCustomerDetails(details,userName);
 		//System.out.println("custobj:"+details.getCustomerData());
 //		customerService.insertNomineeDetails(details,userName);
 		//System.out.println("nomiobj:"+details.getNomineeData());
@@ -67,11 +72,7 @@ public class CustomerController {
 //		}
 	}
 	
-	@RequestMapping(value="/AddNewCustomer" ,  method=RequestMethod.POST)
-	public String addNewCustomer(@RequestBody ClerkCustomer ccData ) {
-		customerService.addNewCustomerDetails(ccData);
-		return "success";
-	}
+	
 	@RequestMapping(value="/searchByLoanId/{userName}",method=RequestMethod.GET)
 	public ActiveLoans searchbyLoanId(@PathVariable String userName,@RequestBody int loanId ) {
 		String cust_id=customerService.getCustomerId(userName);
@@ -181,7 +182,18 @@ public class CustomerController {
 		
 		customerService.cancelApplication(applyid);
 	}
+	
+	@RequestMapping(value="/CloseLoan/{loanId}" ,  method=RequestMethod.POST)
+	public long closeCustomerLoan(@PathVariable  int loanId) {
+		return customerService.closeLoan(loanId);
+		
+	}
 
+
+	
+	//loan payment;
+	
+	
 	
 
 

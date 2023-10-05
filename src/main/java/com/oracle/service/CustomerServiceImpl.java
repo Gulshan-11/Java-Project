@@ -65,7 +65,7 @@ public class CustomerServiceImpl implements CustomerService {
 	
 
 	
-	public boolean insertNomineeDetails(CompleteCustomerDetails ndata, String uName) {
+	public boolean insertNomineeDetails(Nominee ndata, String uName) {
 		// TODO Auto-generated method stub
 		DBConnection dbcon=new DBConnection();
 		Connection con=dbcon.connect();
@@ -79,7 +79,7 @@ public class CustomerServiceImpl implements CustomerService {
 		     sql="insert into nominee values(?,nomineeseq.nextval,?,?,?,?) ";
 		     ps=con.prepareStatement(sql);
 		     ps.setInt(1, custId);
-		     ps.setString(2, ndata.getNomineeName());
+		     ps.setString(2, ndata.getName());
 		     ps.setLong(3, ndata.getPhoneNo());
 		     ps.setString(4, ndata.getRelationship());
 		     ps.setString(5, ndata.getRelationship());
@@ -88,8 +88,9 @@ public class CustomerServiceImpl implements CustomerService {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -190,7 +191,7 @@ public boolean saveApplicationData(String custId, Application data) {
 	DBConnection dbcon=new DBConnection();
 	Connection con=dbcon.connect();
 	String applicationNumber = UUID.randomUUID().toString();
-	String sql="select * from activeloans where loan_type=? and customer_id=? and loan_status!=0";
+	String sql="select * from activeloans where loan_type=? and customerid=? and loan_status!=0";
 	
 	
 	 

@@ -14,7 +14,7 @@ import com.oracle.entity.pdfDocument;
 
 public interface CustomerService {
 	public String insertCustomerDetails(Customer cdata,String uName );
-	public boolean insertNomineeDetails(CompleteCustomerDetails ndata,String uName);
+	public boolean insertNomineeDetails(Nominee ndata,String uName);
 	public boolean saveDocument(pdfDocument docData);
 	public boolean addNewCustomerDetails(ClerkCustomer cdata);
 	public String getCustomerId(String userName);
@@ -24,4 +24,5 @@ public interface CustomerService {
 	public long closeLoan(int loanId);
 	public Customer getCustomerDetails(String userName);
 	public List<Program> getProgramNames(String prgmType);
+	
 }

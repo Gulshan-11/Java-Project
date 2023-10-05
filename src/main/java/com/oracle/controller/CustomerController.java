@@ -197,15 +197,13 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 	public List<Program> getPrograms(@PathVariable String prgmName) {
 		return customerService.getProgramNames(prgmName);
 	}
-	
-
-
-	
-	
-	
-	
-
-
+	@RequestMapping(value="/addNominee/{username}",method=RequestMethod.GET)
+	public String addNomineeDetails(@PathVariable String username,@RequestBody Nominee ndata) {
+		String userid=customerService.getCustomerId(username);
+		if(customerService.insertNomineeDetails(ndata, userid))		
+		return "success";
+		return "fail";
+	}
 	
 
 	

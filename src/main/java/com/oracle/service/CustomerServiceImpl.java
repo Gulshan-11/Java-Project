@@ -189,11 +189,14 @@ public String getCustomerId(String userName) {
 public boolean saveApplicationData(String custId, Application data) {
 	DBConnection dbcon=new DBConnection();
 	Connection con=dbcon.connect();
+	String applicationNumber = UUID.randomUUID().toString();
+	
+	
 	String sql="insert into loanapplication values(?,?,?,?,?,?,?,?,?,?)";
 	try {
 		PreparedStatement ps=con.prepareStatement(sql);
 		ps.setString(1, custId);
-		ps.setString(2, data.getApplicationId());
+		ps.setString(2, applicationNumber);
 		System.out.println(data.getApplicationId()+"    applyid");
 		ps.setString(3,data.getLoanType());
 		System.out.println(data.getLoanType()+"    type");
@@ -223,7 +226,7 @@ public List<Application> getAppllicationsById(String custId) {
 	// TODO Auto-generated method stub
 	DBConnection dbcon=new DBConnection();
 	Connection con=dbcon.connect();
-	String sql="select * from loanapplication where customer_id=? and Application_status!=0";
+	String sql="select * from loanapplication where customer_id=? ";
 	List<Application> applicationData=new ArrayList<>();
 	try {
 		PreparedStatement ps=con.prepareStatement(sql);
@@ -259,7 +262,7 @@ public boolean cancelApplication(String application_id) {
 	// TODO Auto-generated method stub
 	DBConnection dbcon=new DBConnection();
 	Connection con=dbcon.connect();
-	String sql="update loanapplication set Application_status=0 where application_id=? ";
+	String sql="update loanapplication set Application_status=3 where application_id=? ";
 	try {
 		PreparedStatement ps=con.prepareStatement(sql);
 		ps.setString(1, application_id);

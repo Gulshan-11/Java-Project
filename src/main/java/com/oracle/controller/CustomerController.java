@@ -42,7 +42,7 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 	
-	@RequestMapping(value="/loandetails" ,  method=RequestMethod.GET)
+	@RequestMapping(value="/loandetails" ,  method=RequestMethod.POST)
 	public List<ActiveLoans> getDetailsOfLoan(@RequestBody String userName ){
 		return custdao.getLoanDetails(userName);
 	}
@@ -75,7 +75,7 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 	}
 	
 	
-	@RequestMapping(value="/searchByLoanId/{userName}",method=RequestMethod.GET)
+	@RequestMapping(value="/searchByLoanId/{userName}",method=RequestMethod.POST)
 	public ActiveLoans searchbyLoanId(@PathVariable String userName,@RequestBody int loanId ) {
 		String cust_id=customerService.getCustomerId(userName);
 		DBConnection dbcon=new DBConnection();
@@ -105,7 +105,7 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 		return loandata;
 		
 	}
-	@RequestMapping(value="/searchByLoanType/{userName}",method=RequestMethod.GET)
+	@RequestMapping(value="/searchByLoanType/{userName}",method=RequestMethod.POST)
 	public ActiveLoans searchbyLoanType(@PathVariable String userName,@RequestBody String type ) {
 		String cust_id=customerService.getCustomerId(userName);
 		DBConnection dbcon=new DBConnection();
@@ -136,7 +136,7 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 		
 	}
 	
-	@RequestMapping(value="/searchByLoanDate/{userName}",method=RequestMethod.GET)//date
+	@RequestMapping(value="/searchByLoanDate/{userName}",method=RequestMethod.POST)//date
 	public ActiveLoans searchbyLoanDate(@PathVariable String userName,@RequestBody Date date ) {
 		String cust_id=customerService.getCustomerId(userName);
 		DBConnection dbcon=new DBConnection();
@@ -166,7 +166,7 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 		return loandata;
 		
 	}
-	@RequestMapping(value="/ApplyLoan/{userName}" ,  method=RequestMethod.GET)//success tested
+	@RequestMapping(value="/ApplyLoan/{userName}" ,  method=RequestMethod.POST)//success tested
    public String apply(@PathVariable String userName,@RequestBody Application data) {
 		String cust_id=customerService.getCustomerId(userName);
 		String res=customerService.saveApplicationData(cust_id,data);
@@ -198,7 +198,7 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 	public List<Program> getPrograms(@PathVariable String prgmName) {
 		return customerService.getProgramNames(prgmName);
 	}
-	@RequestMapping(value="/addNominee/{username}",method=RequestMethod.GET)
+	@RequestMapping(value="/addNominee/{username}",method=RequestMethod.POST)
 	public String addNomineeDetails(@PathVariable String username,@RequestBody Nominee ndata) {
 		String userid=customerService.getCustomerId(username);
 		if(customerService.insertNomineeDetails(ndata, userid))		

@@ -48,7 +48,7 @@ public class ManagerController {
 	        JsonNode jn;
 			try {
 				jn = obj.readTree(data);
-				String applicaionId=jn.get("applcationId").asText();
+				String applicaionId=jn.get("applicationId").asText();
 				String rejectedReason=jn.get("rejectReason").asText();
 				managerService.reject(userName, applicaionId,rejectedReason);			} catch (JsonMappingException e) {
 				// TODO Auto-generated catch block

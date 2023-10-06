@@ -52,7 +52,7 @@ public class CustomerDaoimpl implements CustomerDao {
 			String cust_id=null;
 			System.out.println("username"+userName);
 			if(rs.next()) {
-				cust_id=rs.getString("cutsomerid");
+				cust_id=rs.getString("customer_id");
 			}else {
 				System.out.println("no data found");
 			}
@@ -73,6 +73,7 @@ public class CustomerDaoimpl implements CustomerDao {
 					obj.setRoi(rs.getFloat("roi"));
 					obj.setTenure(rs.getInt("tenure"));
 					obj.setType(rs.getString("loan_type"));
+					obj.setLoan_status(rs.getInt("loan_status"));
 					loans.add(obj);
 					
 				}

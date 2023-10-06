@@ -14,9 +14,25 @@ private Date date;
 private long amountPaid;
 private String approverName;
 private long emisPaid;
+private int emi;
+private int loan_status;
 //private 
+
+
 public long getLoanId() {
 	return loanId;
+}
+public int getLoan_status() {
+	return loan_status;
+}
+public void setLoan_status(int loan_status) {
+	this.loan_status = loan_status;
+}
+public int getEmi() {
+	return emi;
+}
+public void setEmi(int emi) {
+	this.emi = emi;
 }
 public void setLoanId(long l) {
 	this.loanId = l;

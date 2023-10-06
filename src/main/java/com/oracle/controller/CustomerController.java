@@ -42,8 +42,8 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 	
-	@RequestMapping(value="/loandetails" ,  method=RequestMethod.POST)
-	public List<ActiveLoans> getDetailsOfLoan(@RequestBody String userName ){
+	@RequestMapping(value="/loandetails/{userName}" ,  method=RequestMethod.GET)
+	public List<ActiveLoans> getDetailsOfLoan(@PathVariable String userName ){
 		return custdao.getLoanDetails(userName);
 	}
 @RequestMapping(value="/MyDetails/{userName}",method=RequestMethod.POST)
@@ -206,6 +206,37 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 		return "fail";
 	}
 	
+	@RequestMapping(value="/AddDocument",method=RequestMethod.POST, consumes = "multipart/form-data")
+	public boolean addDocument(@RequestParam("files") List<MultipartFile> files) {
+		DBConnection dbcon=new DBConnection();
+		Connection con=dbcon.connect();
+		String sql="insert into testpdf values(?)";
+		System.out.println("entered");
+		byte[] b=null;
+		for(MultipartFile file:files) {
+			System.out.println("entered for");
+		try {
+			b=file.getBytes();
+			System.out.println("fileName"+file.getOriginalFilename());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			
+			PreparedStatement ps=con.prepareStatement(sql);
+			ps.setBytes(1, b);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		}
+		
+		return true;
+		
+	}
 
 	
 	

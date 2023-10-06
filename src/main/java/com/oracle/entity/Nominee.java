@@ -6,6 +6,14 @@ private long phoneNo;
 private String relationship;
 private String address;
 private byte[]  idProof;
+private String application_id;
+
+public String getApplication_id() {
+	return application_id;
+}
+public void setApplication_id(String application_id) {
+	this.application_id = application_id;
+}
 public String getName() {
 	return name;
 }

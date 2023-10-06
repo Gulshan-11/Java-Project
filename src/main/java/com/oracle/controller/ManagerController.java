@@ -24,13 +24,13 @@ public class ManagerController {
 
 	@Autowired
 	private ManagerService managerService;
-	@RequestMapping(value="/approve/{userName}",method=RequestMethod.GET)//success
+	@RequestMapping(value="/approve/{userName}",method=RequestMethod.POST)//success
 	public boolean approveLoan(@PathVariable String userName,@RequestBody String applyId ) {
         ObjectMapper obj=new ObjectMapper();
         JsonNode jn;
 		try {
 			jn = obj.readTree(applyId);
-			String applicaionId=jn.get("applyid").asText();
+			String applicaionId=jn.get("applicationId").asText();
 			managerService.approveLoan(userName, applicaionId);
 		} catch (JsonMappingException e) {
 			// TODO Auto-generated catch block
@@ -43,13 +43,14 @@ public class ManagerController {
 		return true;
 	}
 	@RequestMapping(value="/reject/{userName}",method=RequestMethod.POST)
-	public boolean RejectLoan(@PathVariable String userName,@RequestBody String applyId ) {
+	public boolean RejectLoan(@PathVariable String userName,@RequestBody String data ) {
 	     ObjectMapper obj=new ObjectMapper();
 	        JsonNode jn;
 			try {
-				jn = obj.readTree(applyId);
-				String applicaionId=jn.get("applyid").asText();
-				managerService.reject(userName, applicaionId);			} catch (JsonMappingException e) {
+				jn = obj.readTree(data);
+				String applicaionId=jn.get("applcationId").asText();
+				String rejectedReason=jn.get("rejectReason").asText();
+				managerService.reject(userName, applicaionId,rejectedReason);			} catch (JsonMappingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (JsonProcessingException e) {

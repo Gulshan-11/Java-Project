@@ -21,7 +21,7 @@ public class ManagerServiceImpl implements ManagerService {
 		// TODO Auto-generated method stub
 		DBConnection dbcon=new DBConnection();
 		Connection con=dbcon.connect();
-		String sql="select * from loanapplication ";
+		String sql="select * from loanapplication where application_status!=3";
 		List<Application> applicationData=new ArrayList<>();
 		try {
 			PreparedStatement ps=con.prepareStatement(sql);
@@ -114,15 +114,16 @@ public boolean approveLoan(String username,String applyid) {
 return true;	
 }
 @Override
-public boolean reject(String userName, String applyid)  {
+public boolean reject(String userName, String applyid,String rejectReason)  {
 	// TODO Auto-generated method stub
 	DBConnection dbcon=new DBConnection();
 	Connection con=dbcon.connect();
-	String sql="update loanapplication set Application_status=0 where application_id=? ";
+	String sql="update loanapplication set Application_status=0,reject_reason=? where application_id=? ";
 	PreparedStatement ps;
 	try {
 		ps = con.prepareStatement(sql);
-		ps.setString(1, applyid);
+		ps.setString(1, rejectReason);
+		ps.setString(2, applyid);
 		ps.executeUpdate();
 		System.out.println("updated application");
 	} catch (SQLException e) {
@@ -143,7 +144,7 @@ public Nominee getNomineeDetails(String applicationNum) {
 	String sql="select * from nomineedetails where application_id=?";
 	try {
 		PreparedStatement ps=con.prepareStatement(sql);
-		ps.setString(1, sql);
+		ps.setString(1, applicationNum);
 		ResultSet rs=ps.executeQuery();
 		if(rs.next()) {
 			n=new Nominee();
@@ -172,6 +173,7 @@ public String getCustomerId(String applyId) {
 		PreparedStatement ps=con.prepareStatement(sql);
 		ps.setString(1, applyId);
 		ResultSet rs=ps.executeQuery();
+		rs.next();
 		custId=rs.getString("customer_id");
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block

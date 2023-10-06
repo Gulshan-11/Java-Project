@@ -2,7 +2,7 @@ package com.oracle.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +14,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oracle.entity.Application;
+import com.oracle.entity.Customer;
+import com.oracle.entity.Nominee;
 import com.oracle.service.ManagerService;
 
 @RestController
-
+@CrossOrigin
 public class ManagerController {
 
 	@Autowired
@@ -57,28 +59,42 @@ public class ManagerController {
 		
 		return true;
 	}
-	@RequestMapping(value="/ApllicationsReject",method=RequestMethod.POST)
+	@RequestMapping(value="/ApllicationsReject",method=RequestMethod.GET)
 	public List<Application>getRejectedAppliactions() {
 		List<Application> applyData= managerService.getAllApplication();
 		List<Application> rejectedApplications=applyData.stream().filter(p->p.getApplicationStatus()==0).toList();
 		
 		return rejectedApplications;
 	}
-	@RequestMapping(value="/ApllicationsAccept",method=RequestMethod.POST)
+	@RequestMapping(value="/ApllicationsAccept",method=RequestMethod.GET)
 	public List<Application>getAcceptedAppliactions() {
 		List<Application> applyData= managerService.getAllApplication();
-		List<Application> rejectedApplications=applyData.stream().filter(p->p.getApplicationStatus()==1).toList();
+		List<Application> acceptedApplications=applyData.stream().filter(p->p.getApplicationStatus()==1).toList();
 		
-		return rejectedApplications;
+		return acceptedApplications;
 	}
-	@RequestMapping(value="/ApllicationsPending",method=RequestMethod.POST)
+	@RequestMapping(value="/ApllicationsPending",method=RequestMethod.GET)
 	public List<Application>getPendingAppliactions() {
 		List<Application> applyData= managerService.getAllApplication();
-		List<Application> rejectedApplications=applyData.stream().filter(p->p.getApplicationStatus()==2).toList();
+		List<Application> pendingApplications=applyData.stream().filter(p->p.getApplicationStatus()==2).toList();
 		
-		return rejectedApplications;
+		return pendingApplications;
+	}
+	@RequestMapping(value="/ApplicationDetails",method=RequestMethod.GET)
+	public List<Application> getApplications(){
+		return managerService.getAllApplication();
 	}
 	
-
+	@RequestMapping(value="/viewNomineeeDetails/{applyId}",method=RequestMethod.GET)
+    public Nominee nomineeDetails(@PathVariable String applyId) {
+		return managerService.getNomineeDetails(applyId);		
+	}
+	@RequestMapping(value="/viewDetails/{applyid}",method=RequestMethod.GET)
+	public Customer getCustomer(@PathVariable String applyid) {
+		String custId=managerService.getCustomerId(applyid);
+		        return  managerService.getCustomerDetails(custId);   
+		
+		
+	} 
 	
 }

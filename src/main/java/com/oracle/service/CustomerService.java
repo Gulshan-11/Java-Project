@@ -18,7 +18,7 @@ public interface CustomerService {
 	public boolean saveDocument(pdfDocument docData);
 	public boolean addNewCustomerDetails(ClerkCustomer cdata);
 	public String getCustomerId(String userName);
-	public boolean saveApplicationData(String custId ,Application data);
+	public String saveApplicationData(String custId ,Application data);
 	public List<Application> getAppllicationsById(String custId);
 	public boolean cancelApplication(String applicatuion_id);
 	public long closeLoan(int loanId);

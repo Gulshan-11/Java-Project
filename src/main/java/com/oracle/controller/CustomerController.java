@@ -166,12 +166,13 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 		return loandata;
 		
 	}
-	@RequestMapping(value="/ApplyLoan/{userName}" ,  method=RequestMethod.POST)//success tested
+	@RequestMapping(value="/ApplyLoan/{userName}" ,  method=RequestMethod.GET)//success tested
    public String apply(@PathVariable String userName,@RequestBody Application data) {
 		String cust_id=customerService.getCustomerId(userName);
-		if(customerService.saveApplicationData(cust_id,data))
-		return "success";
-		return "exists";
+		String res=customerService.saveApplicationData(cust_id,data);
+		if(res==null)
+				return "exists";
+		return res;
 	}
 	@RequestMapping(value="/GetApplications/{userName}" ,  method=RequestMethod.GET)//success tested
      public  List<Application> myapplications(@PathVariable String userName) {

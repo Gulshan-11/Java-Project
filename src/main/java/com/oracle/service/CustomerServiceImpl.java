@@ -71,7 +71,7 @@ public class CustomerServiceImpl implements CustomerService {
 		Connection con=dbcon.connect();
 		
 		try {					
-		     String sql="insert into nomineedetails values(?,nomineeseq.nextval,?,?,?,?) ";
+		     String sql="insert into nomineedetails values(?,nomineeseq.nextval,?,?,?,?,?) ";
 			PreparedStatement ps=con.prepareStatement(sql);
 		     ps=con.prepareStatement(sql);
 		     ps.setString(1, userId);
@@ -79,6 +79,7 @@ public class CustomerServiceImpl implements CustomerService {
 		     ps.setLong(3, ndata.getPhoneNo());
 		     ps.setString(4, ndata.getRelationship());
 		     ps.setString(5, ndata.getAddress());
+		     ps.setString(6, ndata.getApplication_id());
 		     ps.executeUpdate();
 			System.out.println("nominee details inserted");
 		} catch (SQLException e) {
@@ -183,10 +184,10 @@ public String getCustomerId(String userName) {
 
 
 @Override
-public boolean saveApplicationData(String custId, Application data) {
+public String saveApplicationData(String custId, Application data) {
 	DBConnection dbcon=new DBConnection();
 	Connection con=dbcon.connect();
-	String applicationNumber = UUID.randomUUID().toString();
+	String applicationNumber = null;
 	String sql="select * from activeloans where loan_type=? and customerid=? and loan_status!=0";
 	
 	
@@ -196,7 +197,8 @@ public boolean saveApplicationData(String custId, Application data) {
 		ps.setString(1,data.getLoanType() );
 		ps.setString(2, custId);
 		ResultSet rs=ps.executeQuery();
-		if(rs.next())return false;
+		if(rs.next())return null;
+		applicationNumber = UUID.randomUUID().toString();
 		sql="insert into loanapplication values(?,?,?,?,?,?,?,?,?,?)";
 		ps=con.prepareStatement(sql);
 		ps.setString(1, custId);
@@ -218,7 +220,7 @@ public boolean saveApplicationData(String custId, Application data) {
 	}
 	
 	
-	return true;
+	return applicationNumber;
 }
 
 

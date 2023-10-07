@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.oracle.entity.Application;
 import com.oracle.entity.ClerkCustomer;
+import com.oracle.entity.Customer;
 import com.oracle.service.ClerkService;
 import com.oracle.service.CustomerService;
 @RestController
@@ -58,6 +59,11 @@ public class ClerckController {
 		return canceledappli;
 	}
 	
+	@RequestMapping(value="/GetCustomerDetailsById/{custId}" ,  method=RequestMethod.GET)
+	public Customer getCustomerDetails(String CustomerId) {
+		return clerkService.getgetCustomerDetailsById(CustomerId);
+	}
+
 	
 	
 	

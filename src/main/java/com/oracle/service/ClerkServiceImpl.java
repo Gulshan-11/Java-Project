@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.oracle.dao.DBConnection;
 import com.oracle.entity.Application;
+import com.oracle.entity.Customer;
 @Component
 public class ClerkServiceImpl implements ClerkService {
 
@@ -45,6 +46,46 @@ public class ClerkServiceImpl implements ClerkService {
 
 		
 		return applicationData;
+	}
+
+	@Override
+	public Customer getgetCustomerDetailsById(String CustomerId) {
+	
+		DBConnection dbcon=new DBConnection();
+		Connection con=dbcon.connect();
+		String sql="select * from customerdetails where customer_id=?";
+		Customer custData=null;
+		try {
+			PreparedStatement ps=con.prepareStatement(sql);
+			ps.setString(1, CustomerId);
+			ResultSet rs=ps.executeQuery();
+			if(rs.next()) {
+				custData=new Customer();
+				custData.setFirstName(rs.getString("first_name"));
+				custData.setLastName(rs.getString("last_name"));
+				custData.setDob(rs.getDate("dob"));
+				custData.setEmail(rs.getString("email_id"));
+				custData.setPhoneNo(rs.getLong("phone_no"));
+				custData.setOccupation(rs.getString("occupation"));
+				custData.setEmp_type(rs.getString("emp_type"));
+				custData.setGender(rs.getString("gender"));
+				custData.setIncome(rs.getLong("income"));
+				custData.setCreditScore(rs.getInt("credit_score"));
+				custData.setRegDate(rs.getDate("registered_date"));
+				custData.setAccountStatus(rs.getString("account_status"));
+				custData.setAddress(rs.getString("address"));
+				custData.setCity(rs.getString("city"));
+				custData.setState(rs.getString("state_name"));
+				custData.setCountry(rs.getString("country"));
+				custData.setPincode(rs.getInt("pincode"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return custData;
+
 	}
 
 }

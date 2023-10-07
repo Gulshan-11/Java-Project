@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.oracle.dao.DBConnection;
+import com.oracle.entity.ActiveLoans;
 import com.oracle.entity.Application;
 import com.oracle.entity.Customer;
 @Component
@@ -85,6 +86,46 @@ public class ClerkServiceImpl implements ClerkService {
 		}
 
 		return custData;
+
+	}
+
+	@Override
+	public ActiveLoans getLoanDetailsById(int loanId) {
+		// TODO Auto-generated method stub
+		
+		DBConnection dbcon=new DBConnection();
+		Connection con=dbcon.connect();
+		ActiveLoans obj=null;
+		//String sql="select * from activeloans where customerId=?";
+		try {
+		
+				String sql="select * from activeloans where loan_id=?";
+				PreparedStatement ps =con.prepareStatement(sql);
+				ps.setInt(1, loanId);
+				ResultSet rs=ps.executeQuery();
+				if(rs.next()) {
+					obj=new ActiveLoans();
+					obj.setAmountPaid(rs.getLong("amount_paid"));
+					obj.setAmountSanctioned(rs.getLong("amount_sanctioned"));
+					obj.setApproverName(rs.getString("approver_name"));
+					obj.setDate(rs.getDate("start_date"));
+					obj.setEmisPaid(rs.getInt("emis_paid"));
+					obj.setLoanId(rs.getLong("loan_id"));
+					obj.setProgrameName(rs.getString("programe_name"));
+					obj.setRoi(rs.getFloat("roi"));
+					obj.setTenure(rs.getInt("tenure"));
+					obj.setType(rs.getString("loan_type"));
+					obj.setLoan_status(rs.getInt("loan_status"));
+					
+				}
+				
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return obj;
 
 	}
 

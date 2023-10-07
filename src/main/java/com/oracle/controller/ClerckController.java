@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.oracle.entity.ActiveLoans;
 import com.oracle.entity.Application;
 import com.oracle.entity.ClerkCustomer;
 import com.oracle.entity.Customer;
@@ -60,9 +61,14 @@ public class ClerckController {
 	}
 	
 	@RequestMapping(value="/GetCustomerDetailsById/{custId}" ,  method=RequestMethod.GET)
-	public Customer getCustomerDetails(String CustomerId) {
-		return clerkService.getgetCustomerDetailsById(CustomerId);
+	public Customer getCustomerDetails(@PathVariable String CustId) {
+		return clerkService.getgetCustomerDetailsById(CustId);
 	}
+	@RequestMapping(value="/GetLoanDetailsById/{loanId}" ,  method=RequestMethod.GET)
+	public ActiveLoans getLoanDetails(@PathVariable int loanId) {
+		return clerkService.getLoanDetailsById(loanId);
+	}
+
 
 	
 	

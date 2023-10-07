@@ -10,5 +10,6 @@ public interface ClerkService {
 	public List<Application> getAllApplications();
 	public Customer getgetCustomerDetailsById(String CustomerId);
 	public ActiveLoans getLoanDetailsById(int loanId);
+	public List<ActiveLoans> getLoanDetails();
 	
 }

@@ -128,5 +128,40 @@ public class ClerkServiceImpl implements ClerkService {
 		return obj;
 
 	}
+	public List<ActiveLoans> getLoanDetails() {
+		DBConnection dbcon=new DBConnection();
+		Connection con=dbcon.connect();
+		List<ActiveLoans> loans=new ArrayList<>();
+		//String sql="select * from activeloans";
+		try {
+		
+			String sql="select * from activeloans";
+			PreparedStatement ps=con.prepareStatement(sql);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				ActiveLoans obj=new ActiveLoans();
+				obj.setAmountPaid(rs.getLong("amount_paid"));
+				obj.setAmountSanctioned(rs.getLong("amount_sanctioned"));
+				obj.setApproverName(rs.getString("approver_name"));
+				obj.setDate(rs.getDate("start_date"));
+				obj.setEmisPaid(rs.getInt("emis_paid"));
+				obj.setLoanId(rs.getLong("loan_id"));
+				obj.setProgrameName(rs.getString("programe_name"));
+				obj.setRoi(rs.getFloat("roi"));
+				obj.setTenure(rs.getInt("tenure"));
+				obj.setType(rs.getString("loan_type"));
+				obj.setLoan_status(rs.getInt("loan_status"));
+				loans.add(obj);
+				
+			}
+				
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return loans;
+	}
 
 }

@@ -2,6 +2,7 @@ package com.oracle.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.system.ApplicationTemp;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +15,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oracle.entity.Application;
+import com.oracle.entity.ApplicationType;
 import com.oracle.entity.Customer;
+import com.oracle.entity.DocumentRetrievalData;
 import com.oracle.entity.Nominee;
 import com.oracle.service.ManagerService;
 
@@ -98,4 +101,10 @@ public class ManagerController {
 		
 	} 
 	
+	@RequestMapping(value="/getDocuments",method=RequestMethod.POST)
+	public List<DocumentRetrievalData> getDocumentsByApplyId(@RequestBody ApplicationType at){
+		String custId=managerService.getCustomerId(at.getApplicationNum());
+		return managerService.getDocumentData(custId, at.getLaonType());
+		
+	}
 }

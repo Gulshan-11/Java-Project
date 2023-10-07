@@ -1,5 +1,6 @@
 package com.oracle.service;
 
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oracle.dao.DBConnection;
 import com.oracle.entity.Application;
 import com.oracle.entity.Customer;
+import com.oracle.entity.DocumentData;
+import com.oracle.entity.DocumentRetrievalData;
 import com.oracle.entity.Nominee;
 @Component
 public class ManagerServiceImpl implements ManagerService {
@@ -173,7 +176,7 @@ public String getCustomerId(String applyId) {
 		PreparedStatement ps=con.prepareStatement(sql);
 		ps.setString(1, applyId);
 		ResultSet rs=ps.executeQuery();
-		rs.next();
+		if(rs.next())
 		custId=rs.getString("customer_id");
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
@@ -220,6 +223,38 @@ public Customer getCustomerDetails(String custId) {
 	return custData;
 
 }
+@Override
+public List<DocumentRetrievalData> getDocumentData(String custId, String loanType) {
+	// TODO Auto-generated method stub
+	DBConnection dbcon=new DBConnection();
+	Connection con=dbcon.connect();
+	String sql="select * from documents where customer_id=? and loan_type=? ";
+	List<DocumentRetrievalData> docList=new ArrayList<>();
+	try {
+		PreparedStatement ps=con.prepareStatement(sql);
+		ps.setString(1, custId);
+		ps.setString(2, loanType);
+		ResultSet rs=ps.executeQuery();
+		
+	    while(rs.next()) {
+	    	DocumentRetrievalData data=new DocumentRetrievalData();
+	    	data.setDocName(rs.getString("file_name"));
+	    	Blob blob=rs.getBlob("file_document");
+	    	if(blob!=null) {
+	    	data.setDoclData(blob.getBytes(1,(int)blob.length()));	
+	    	}
+	    	docList.add(data);
+	    	
+	    }
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	
+	return docList;
+}
+
 	
 
 }

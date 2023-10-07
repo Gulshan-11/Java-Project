@@ -17,6 +17,7 @@ import com.oracle.entity.Application;
 import com.oracle.entity.ClerkCustomer;
 import com.oracle.entity.CompleteCustomerDetails;
 import com.oracle.entity.Customer;
+import com.oracle.entity.DocumentData;
 import com.oracle.entity.Nominee;
 import com.oracle.entity.Program;
 import com.oracle.entity.pdfDocument;
@@ -91,19 +92,26 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public boolean saveDocument(pdfDocument docData) {
+	public boolean saveDocument(String custId,DocumentData docData) {
 		// TODO Auto-generated method stub
 		DBConnection dbcon=new DBConnection();
 		Connection con=dbcon.connect();
-		String	sql="insert into  documents values(?,?,?)";			
+		String loan_type=docData.getLoanType();
+		List<MultipartFile> files=docData.getFile();
+		String	sql="insert into  documents values(?,?,?,?)";	
+		for(MultipartFile file:files) {
 		try {
 			PreparedStatement ps=con.prepareStatement(sql);
-			ps.setString(1, docData.getCustomer_id());
-			ps.setString(2, docData.getLoan_type());
-			ps.setBytes(3, docData.getPdfData());
-		} catch (SQLException e) {
+			byte[] filedata=file.getBytes();
+			ps.setString(1, custId);
+			ps.setString(2, loan_type);
+			ps.setBytes(3, filedata);
+			ps.setString(4, file.getOriginalFilename());
+		} catch (SQLException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
 		}
 		
 		return false;

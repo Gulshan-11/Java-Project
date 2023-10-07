@@ -61,12 +61,16 @@ public class ClerckController {
 	}
 	
 	@RequestMapping(value="/GetCustomerDetailsById/{custId}" ,  method=RequestMethod.GET)
-	public Customer getCustomerDetails(@PathVariable String CustId) {
-		return clerkService.getgetCustomerDetailsById(CustId);
+	public Customer getCustomerDetails(@PathVariable String custId) {
+		return clerkService.getgetCustomerDetailsById(custId);
 	}
 	@RequestMapping(value="/GetLoanDetailsById/{loanId}" ,  method=RequestMethod.GET)
 	public ActiveLoans getLoanDetails(@PathVariable int loanId) {
 		return clerkService.getLoanDetailsById(loanId);
+	}
+	@RequestMapping(value="/GetAllLoanDetails" ,  method=RequestMethod.GET)
+	public List<ActiveLoans> getLoanDetails() {
+		return clerkService.getLoanDetails();
 	}
 
 

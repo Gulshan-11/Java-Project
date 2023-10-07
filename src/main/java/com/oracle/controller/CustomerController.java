@@ -27,6 +27,7 @@ import com.oracle.entity.Application;
 import com.oracle.entity.ClerkCustomer;
 import com.oracle.entity.CompleteCustomerDetails;
 import com.oracle.entity.Customer;
+import com.oracle.entity.DocumentData;
 import com.oracle.entity.Nominee;
 import com.oracle.entity.Program;
 import com.oracle.entity.pdfDocument;
@@ -206,37 +207,42 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 		return "fail";
 	}
 	
-	@RequestMapping(value="/AddDocument",method=RequestMethod.POST, consumes = "multipart/form-data")
-	public boolean addDocument(@RequestParam("files") List<MultipartFile> files) {
-		DBConnection dbcon=new DBConnection();
-		Connection con=dbcon.connect();
-		String sql="insert into testpdf values(?)";
-		System.out.println("entered");
-		byte[] b=null;
-		for(MultipartFile file:files) {
-			System.out.println("entered for");
-		try {
-			b=file.getBytes();
-			System.out.println("fileName"+file.getOriginalFilename());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			
-			PreparedStatement ps=con.prepareStatement(sql);
-			ps.setBytes(1, b);
-			ps.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		}
-		
-		return true;
+	@RequestMapping(value="/AddDocument/{userName}",method=RequestMethod.POST, consumes = "multipart/form-data")
+	public boolean addDocument(@PathVariable String userName,@RequestBody DocumentData data) {
+		String cust_id=customerService.getCustomerId(userName);
+		return customerService.saveDocument(cust_id, data);
+//	public boolean addDocument(@RequestParam("files") List<MultipartFile> files) {
+//		DBConnection dbcon=new DBConnection();
+//		Connection con=dbcon.connect();
+//		String sql="insert into testpdf values(?)";
+//		System.out.println("entered");
+//		byte[] b=null;
+//		for(MultipartFile file:files) {
+//			System.out.println("entered for");
+//		try {
+//			b=file.getBytes();
+//			System.out.println("fileName"+file.getOriginalFilename());
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		try {
+//			
+//			PreparedStatement ps=con.prepareStatement(sql);
+//			ps.setBytes(1, b);
+//			ps.executeUpdate();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		}
+//		
+//		return true;
+//		
 		
 	}
+	
 
 	
 	

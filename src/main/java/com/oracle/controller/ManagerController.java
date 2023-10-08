@@ -19,41 +19,53 @@ import com.oracle.entity.ApplicationType;
 import com.oracle.entity.Customer;
 import com.oracle.entity.DocumentRetrievalData;
 import com.oracle.entity.Nominee;
+import com.oracle.secure.config.JwtTokenUtil;
 import com.oracle.service.ManagerService;
 
 @RestController
 @CrossOrigin
 public class ManagerController {
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 
 	@Autowired
 	private ManagerService managerService;
-	@RequestMapping(value="/approve/{userName}",method=RequestMethod.POST)//success
-	public boolean approveLoan(@PathVariable String userName,@RequestBody String applyId ) {
+	@RequestMapping(value="/approve/{token}",method=RequestMethod.POST)//success
+	public boolean approveLoan(@PathVariable String token,@RequestBody String applyId ) {
+		String userName=jwtTokenUtil.getUsernameFromToken(token);
+
         ObjectMapper obj=new ObjectMapper();
         JsonNode jn;
 		try {
 			jn = obj.readTree(applyId);
 			String applicaionId=jn.get("applicationId").asText();
-			managerService.approveLoanService(userName, applicaionId);
+			if(managerService.approveLoanService(userName, applicaionId))
+				return true;
 		} catch (JsonMappingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		
+			
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         
-		return true;
+		return false;
 	}
-	@RequestMapping(value="/reject/{userName}",method=RequestMethod.POST)
-	public boolean RejectLoan(@PathVariable String userName,@RequestBody String data ) {
+	@RequestMapping(value="/reject/{token}",method=RequestMethod.POST)
+	public boolean RejectLoan(@PathVariable String token,@RequestBody String data ) {
+		String userName=jwtTokenUtil.getUsernameFromToken(token);
+
 	     ObjectMapper obj=new ObjectMapper();
 	        JsonNode jn;
 			try {
 				jn = obj.readTree(data);
 				String applicaionId=jn.get("applicationId").asText();
 				String rejectedReason=jn.get("rejectReason").asText();
-				managerService.rejectService(userName, applicaionId,rejectedReason);			} catch (JsonMappingException e) {
+				if(managerService.rejectService(userName, applicaionId,rejectedReason))
+				   return  true;
+					} catch (JsonMappingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (JsonProcessingException e) {
@@ -61,7 +73,7 @@ public class ManagerController {
 				e.printStackTrace();
 			}
 		
-		return true;
+		return false;
 	}
 	@RequestMapping(value="/ApllicationsReject",method=RequestMethod.GET)
 	public List<Application>getRejectedAppliactions() {

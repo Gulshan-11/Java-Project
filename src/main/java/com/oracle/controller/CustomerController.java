@@ -31,6 +31,7 @@ import com.oracle.entity.DocumentData;
 import com.oracle.entity.Nominee;
 import com.oracle.entity.Program;
 import com.oracle.entity.pdfDocument;
+import com.oracle.exceptions.ApplicationException;
 import com.oracle.secure.config.JwtTokenUtil;
 import com.oracle.service.CustomerService;
 @RestController
@@ -44,8 +45,9 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 	
-	@RequestMapping(value="/loandetails/{userName}" ,  method=RequestMethod.GET)
-	public List<ActiveLoans> getDetailsOfLoan(@PathVariable String userName ){
+	@RequestMapping(value="/loandetails/{token}" ,  method=RequestMethod.GET)
+	public List<ActiveLoans> getDetailsOfLoan(@PathVariable String token ){
+		String userName=jwtTokenUtil.getUsernameFromToken(token);
 		return customerService.getLoanDetailsService(userName);
 	}
 @RequestMapping(value="/MyDetails/{token}",method=RequestMethod.POST)
@@ -53,33 +55,17 @@ public Customer getDetailsOfCustomer(@PathVariable String token) {
 	String userName=jwtTokenUtil.getUsernameFromToken(token);
 	 return customerService.getCustomerDetailsService(userName);
 }
-	@RequestMapping(value="/SaveDetails/{userName}" ,  method=RequestMethod.POST)
+	@RequestMapping(value="/SaveDetails/{token}" ,  method=RequestMethod.POST)
 	//@RequestBody MultipartFile[] file
-	public String apply(@PathVariable String userName,@RequestBody Customer details) {
-		
+	public String apply(@PathVariable String token,@RequestBody Customer details) {
+		String userName=jwtTokenUtil.getUsernameFromToken(token);		
 		return customerService.insertCustomerDetailsService(details,userName);
-		//System.out.println("custobj:"+details.getCustomerData());
-//		customerService.insertNomineeDetails(details,userName);
-		//System.out.println("nomiobj:"+details.getNomineeData());
-		
-//		for (MultipartFile eachfile: file) {
-//			pdfDocument doc=new pdfDocument();
-//			try {
-//				doc.setPdfData(eachfile.getBytes());
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			doc.setCustomerId(details.getCustomerData().getCustId());
-//			
-//			customerService.saveDocument(doc);
-//			System.out.println("success");
-//		}
 	}
 	
 	
-	@RequestMapping(value="/searchByLoanId/{userName}",method=RequestMethod.POST)
-	public ActiveLoans searchbyLoanId(@PathVariable String userName,@RequestBody int loanId ) {
+	@RequestMapping(value="/searchByLoanId/{token}",method=RequestMethod.POST)
+	public ActiveLoans searchbyLoanId(@PathVariable String token,@RequestBody int loanId ) {
+		String userName=jwtTokenUtil.getUsernameFromToken(token);
 		String cust_id=customerService.getCustomerIdService(userName);
 		DBConnection dbcon=new DBConnection();
 		Connection con=dbcon.connect();
@@ -108,8 +94,9 @@ public Customer getDetailsOfCustomer(@PathVariable String token) {
 		return loandata;
 		
 	}
-	@RequestMapping(value="/searchByLoanType/{userName}",method=RequestMethod.POST)
-	public ActiveLoans searchbyLoanType(@PathVariable String userName,@RequestBody String type ) {
+	@RequestMapping(value="/searchByLoanType/{token}",method=RequestMethod.POST)
+	public ActiveLoans searchbyLoanType(@PathVariable String token,@RequestBody String type ) {
+		String userName=jwtTokenUtil.getUsernameFromToken(token);
 		String cust_id=customerService.getCustomerIdService(userName);
 		DBConnection dbcon=new DBConnection();
 		Connection con=dbcon.connect();
@@ -139,8 +126,9 @@ public Customer getDetailsOfCustomer(@PathVariable String token) {
 		
 	}
 	
-	@RequestMapping(value="/searchByLoanDate/{userName}",method=RequestMethod.POST)//date
-	public ActiveLoans searchbyLoanDate(@PathVariable String userName,@RequestBody Date date ) {
+	@RequestMapping(value="/searchByLoanDate/{token}",method=RequestMethod.POST)//date
+	public ActiveLoans searchbyLoanDate(@PathVariable String token,@RequestBody Date date ) {
+		String userName=jwtTokenUtil.getUsernameFromToken(token);
 		String cust_id=customerService.getCustomerIdService(userName);
 		DBConnection dbcon=new DBConnection();
 		Connection con=dbcon.connect();
@@ -169,25 +157,29 @@ public Customer getDetailsOfCustomer(@PathVariable String token) {
 		return loandata;
 		
 	}
-	@RequestMapping(value="/ApplyLoan/{userName}" ,  method=RequestMethod.POST)//success tested
-   public String apply(@PathVariable String userName,@RequestBody Application data) {
+	@RequestMapping(value="/ApplyLoan/{token}" ,  method=RequestMethod.POST)//success tested
+   public String apply(@PathVariable String token,@RequestBody Application data) {
+		String userName=jwtTokenUtil.getUsernameFromToken(token);
 		String cust_id=customerService.getCustomerIdService(userName);
+		if(cust_id==null) throw new ApplicationException("Customer Not Found");
 		String res=customerService.saveApplicationDataService(cust_id,data);
 		if(res==null)
 				return "exists";
 		return res;
 	}
-	@RequestMapping(value="/GetApplications/{userName}" ,  method=RequestMethod.GET)//success tested
-     public  List<Application> myapplications(@PathVariable String userName) {
+	@RequestMapping(value="/GetApplications/{token}" ,  method=RequestMethod.GET)//success tested
+     public  List<Application> myapplications(@PathVariable String token) {
+		String userName=jwtTokenUtil.getUsernameFromToken(token);
 		String cust_id=customerService.getCustomerIdService(userName);
+		if(cust_id==null) throw new ApplicationException("Customer Not Found");
 		return customerService.getAppllicationsByIdService(cust_id);
 
 		
 	}
 	@RequestMapping(value="/ApplicationClose/{applyid}" ,  method=RequestMethod.POST)//success tested
-	public void CloseApplication(@PathVariable String applyid) {
+	public boolean CloseApplication(@PathVariable String applyid) {
 		
-		customerService.cancelApplicationService(applyid);
+		return customerService.cancelApplicationService(applyid);
 	}
 	
 	@RequestMapping(value="/CloseLoan/{loanId}" ,  method=RequestMethod.POST)
@@ -201,10 +193,11 @@ public Customer getDetailsOfCustomer(@PathVariable String token) {
 	public List<Program> getPrograms(@PathVariable String prgmName) {
 		return customerService.getProgramNamesService(prgmName);
 	}
-	@RequestMapping(value="/addNominee/{username}",method=RequestMethod.POST)
-	public String addNomineeDetails(@PathVariable String username,@RequestBody Nominee ndata) {
-		String userid=customerService.getCustomerIdService(username);
-		if(customerService.insertNomineeDetailsService(ndata, userid))		
+	@RequestMapping(value="/addNominee/{token}",method=RequestMethod.POST)
+	public String addNomineeDetails(@PathVariable String token,@RequestBody Nominee ndata) {
+		String userName=jwtTokenUtil.getUsernameFromToken(token);
+		String userId=customerService.getCustomerIdService(userName);
+		if(customerService.insertNomineeDetailsService(ndata, userId))		
 		return "success";
 		return "fail";
 	}

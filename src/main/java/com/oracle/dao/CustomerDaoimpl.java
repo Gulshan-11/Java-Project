@@ -215,6 +215,7 @@ public class CustomerDaoimpl implements CustomerDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 		return true;
 	}
@@ -329,6 +330,7 @@ public class CustomerDaoimpl implements CustomerDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 
 		return true;

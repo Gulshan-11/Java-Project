@@ -29,6 +29,7 @@ public class ClerckController {
 		customerService.addNewCustomerDetailsService(ccData);
 		return "success";
 	}
+	
 	@RequestMapping(value="/GetAllApplications" ,  method=RequestMethod.GET)//success tested
     public  List<Application> myapplications() {
 		

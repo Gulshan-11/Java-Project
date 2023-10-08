@@ -111,6 +111,7 @@ public class ManagerDaoImpl implements ManagerDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 		
 		
@@ -133,6 +134,7 @@ public class ManagerDaoImpl implements ManagerDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 		
 		

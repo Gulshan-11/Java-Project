@@ -6,13 +6,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class DocumentData {
 private String loanType;
-private List<MultipartFile> file;
+private List<FileDto> file;
 
 
-public List< MultipartFile> getFile() {
+public List<FileDto> getFile() {
 	return file;
 }
-public void setFile(List<MultipartFile> file) {
+public void setFile(List<FileDto> file) {
 	this.file = file;
 }
 

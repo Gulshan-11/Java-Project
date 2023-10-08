@@ -34,7 +34,7 @@ public class ManagerController {
 		try {
 			jn = obj.readTree(applyId);
 			String applicaionId=jn.get("applicationId").asText();
-			managerService.approveLoan(userName, applicaionId);
+			managerService.approveLoanService(userName, applicaionId);
 		} catch (JsonMappingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,7 +53,7 @@ public class ManagerController {
 				jn = obj.readTree(data);
 				String applicaionId=jn.get("applicationId").asText();
 				String rejectedReason=jn.get("rejectReason").asText();
-				managerService.reject(userName, applicaionId,rejectedReason);			} catch (JsonMappingException e) {
+				managerService.rejectService(userName, applicaionId,rejectedReason);			} catch (JsonMappingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (JsonProcessingException e) {
@@ -65,46 +65,46 @@ public class ManagerController {
 	}
 	@RequestMapping(value="/ApllicationsReject",method=RequestMethod.GET)
 	public List<Application>getRejectedAppliactions() {
-		List<Application> applyData= managerService.getAllApplication();
+		List<Application> applyData= managerService.getAllApplicationService();
 		List<Application> rejectedApplications=applyData.stream().filter(p->p.getApplicationStatus()==0).toList();
 		
 		return rejectedApplications;
 	}
 	@RequestMapping(value="/ApllicationsAccept",method=RequestMethod.GET)
 	public List<Application>getAcceptedAppliactions() {
-		List<Application> applyData= managerService.getAllApplication();
+		List<Application> applyData= managerService.getAllApplicationService();
 		List<Application> acceptedApplications=applyData.stream().filter(p->p.getApplicationStatus()==1).toList();
 		
 		return acceptedApplications;
 	}
 	@RequestMapping(value="/ApllicationsPending",method=RequestMethod.GET)
 	public List<Application>getPendingAppliactions() {
-		List<Application> applyData= managerService.getAllApplication();
+		List<Application> applyData= managerService.getAllApplicationService();
 		List<Application> pendingApplications=applyData.stream().filter(p->p.getApplicationStatus()==2).toList();
 		
 		return pendingApplications;
 	}
 	@RequestMapping(value="/ApplicationDetails",method=RequestMethod.GET)
 	public List<Application> getApplications(){
-		return managerService.getAllApplication();
+		return managerService.getAllApplicationService();
 	}
 	
 	@RequestMapping(value="/viewNomineeeDetails/{applyId}",method=RequestMethod.GET)
     public Nominee nomineeDetails(@PathVariable String applyId) {
-		return managerService.getNomineeDetails(applyId);		
+		return managerService.getNomineeDetailsService(applyId);		
 	}
 	@RequestMapping(value="/viewDetails/{applyid}",method=RequestMethod.GET)
 	public Customer getCustomer(@PathVariable String applyid) {
-		String custId=managerService.getCustomerId(applyid);
-		        return  managerService.getCustomerDetails(custId);   
+		String custId=managerService.getCustomerIdService(applyid);
+		        return  managerService.getCustomerDetailsService(custId);   
 		
 		
 	} 
 	
-	@RequestMapping(value="/getDocuments",method=RequestMethod.POST)
-	public List<DocumentRetrievalData> getDocumentsByApplyId(@RequestBody ApplicationType at){
-		String custId=managerService.getCustomerId(at.getApplicationNum());
-		return managerService.getDocumentData(custId, at.getLaonType());
+	@RequestMapping(value="/getDocuments/{applicationID}",method=RequestMethod.POST)
+	public List<DocumentRetrievalData> getDocumentsByApplyId(@PathVariable String applicationID){
+		//String custId=managerService.getCustomerIdService(at.getApplicationNum());
+		return managerService.getDocumentDataService(applicationID);
 		
 	}
 }

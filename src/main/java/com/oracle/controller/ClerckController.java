@@ -26,51 +26,51 @@ public class ClerckController {
 	private ClerkService clerkService;
 	@RequestMapping(value="/AddNewCustomer" ,  method=RequestMethod.POST)
 	public String addNewCustomer(@RequestBody ClerkCustomer ccData ) {
-		customerService.addNewCustomerDetails(ccData);
+		customerService.addNewCustomerDetailsService(ccData);
 		return "success";
 	}
 	@RequestMapping(value="/GetAllApplications" ,  method=RequestMethod.GET)//success tested
     public  List<Application> myapplications() {
 		
-		return clerkService.getAllApplications();
+		return clerkService.getAllApplicationsService();
 		
 	}
 	@RequestMapping(value="/GetAllRejectedApplications" ,  method=RequestMethod.GET)//success tested
     public  List<Application> allReajectedpplications() {
 		
-		List<Application> rejappli=clerkService.getAllApplications().stream().filter(p->p.getApplicationStatus()==0).toList();
+		List<Application> rejappli=clerkService.getAllApplicationsService().stream().filter(p->p.getApplicationStatus()==0).toList();
 		return rejappli;
 	}
 	@RequestMapping(value="/GetAllacceptedApplications" ,  method=RequestMethod.GET)//success tested
     public  List<Application> allacceptedpplications() {
 		
-		List<Application> acceptedappli=clerkService.getAllApplications().stream().filter(p->p.getApplicationStatus()==1).toList();
+		List<Application> acceptedappli=clerkService.getAllApplicationsService().stream().filter(p->p.getApplicationStatus()==1).toList();
 		return acceptedappli;
 	}
 	@RequestMapping(value="/GetAllPendingApplications" ,  method=RequestMethod.GET)//success tested
     public  List<Application> allPendingapplications() {
 		
-		List<Application> pendingappli=clerkService.getAllApplications().stream().filter(p->p.getApplicationStatus()==2).toList();
+		List<Application> pendingappli=clerkService.getAllApplicationsService().stream().filter(p->p.getApplicationStatus()==2).toList();
 		return pendingappli;
 	}
 	@RequestMapping(value="/GetAllCanceledApplications" ,  method=RequestMethod.GET)//success tested
     public  List<Application> allCanceledapplications() {
 		
-		List<Application> canceledappli=clerkService.getAllApplications().stream().filter(p->p.getApplicationStatus()==3).toList();
+		List<Application> canceledappli=clerkService.getAllApplicationsService().stream().filter(p->p.getApplicationStatus()==3).toList();
 		return canceledappli;
 	}
 	
 	@RequestMapping(value="/GetCustomerDetailsById/{custId}" ,  method=RequestMethod.GET)
 	public Customer getCustomerDetails(@PathVariable String custId) {
-		return clerkService.getgetCustomerDetailsById(custId);
+		return clerkService.getgetCustomerDetailsByIdService(custId);
 	}
 	@RequestMapping(value="/GetLoanDetailsById/{loanId}" ,  method=RequestMethod.GET)
 	public ActiveLoans getLoanDetails(@PathVariable int loanId) {
-		return clerkService.getLoanDetailsById(loanId);
+		return clerkService.getLoanDetailsByIdService(loanId);
 	}
 	@RequestMapping(value="/GetAllLoanDetails" ,  method=RequestMethod.GET)
 	public List<ActiveLoans> getLoanDetails() {
-		return clerkService.getLoanDetails();
+		return clerkService.getLoanDetailsService();
 	}
 
 

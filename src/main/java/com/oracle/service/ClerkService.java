@@ -7,9 +7,9 @@ import com.oracle.entity.Application;
 import com.oracle.entity.Customer;
 
 public interface ClerkService {
-	public List<Application> getAllApplications();
-	public Customer getgetCustomerDetailsById(String CustomerId);
-	public ActiveLoans getLoanDetailsById(int loanId);
-	public List<ActiveLoans> getLoanDetails();
+	public List<Application> getAllApplicationsService();
+	public Customer getgetCustomerDetailsByIdService(String CustomerId);
+	public ActiveLoans getLoanDetailsByIdService(int loanId);
+	public List<ActiveLoans> getLoanDetailsService();
 	
 }

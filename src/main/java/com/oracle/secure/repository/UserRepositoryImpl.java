@@ -27,10 +27,11 @@ public class UserRepositoryImpl implements UserRepository {
 		 
 		   if( rs.next()) {
 			   System.out.println("user found .....");
-		   
+			   int id=rs.getInt("id");
 		    String uname=rs.getString("username");
 		    String role=rs.getString("role");
-		    String password=rs.getString("password");		   
+		    String password=rs.getString("password");
+		    user.setId(id);
 		    user.setUsername(uname);
 		    user.setRole(role);
 		    user.setPassword(password);
@@ -56,10 +57,9 @@ public class UserRepositoryImpl implements UserRepository {
 	public User save(User user) {
 
 Connection con=	dbConnection.connect();
-String sql="insert into userdetails values(?,?,?)";
+String sql="insert into userdetails values(?,?,?,userIdSeq.nextval)";
 try {
-	PreparedStatement pstmt=con.prepareStatement(sql);
-	//pstmt.setLong(1, user.getId());
+	PreparedStatement pstmt=con.prepareStatement(sql);	
 	pstmt.setString(1, user.getUsername());
 	pstmt.setString(2, user.getPassword());
 	pstmt.setString(3, user.getRole());

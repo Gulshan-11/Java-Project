@@ -9,11 +9,11 @@ import com.oracle.entity.DocumentRetrievalData;
 import com.oracle.entity.Nominee;
 
 public interface ManagerService {
-         List<Application> getAllApplication();
-         boolean approveLoan(String userName,String appli_id);
-         boolean reject(String userName,String appli_id,String rejectReason);
-         Nominee getNomineeDetails(String applicationNum);
-         String getCustomerId(String applyId);
-         Customer getCustomerDetails(String custId);
-         List<DocumentRetrievalData> getDocumentData(String userName,String LoanType);
+         List<Application> getAllApplicationService();
+         boolean approveLoanService(String userName,String appli_id);
+         boolean rejectService(String userName,String appli_id,String rejectReason);
+         Nominee getNomineeDetailsService(String applicationNum);
+         String getCustomerIdService(String applyId);
+         Customer getCustomerDetailsService(String custId);
+         List<DocumentRetrievalData> getDocumentDataService(String applicationId);
 }

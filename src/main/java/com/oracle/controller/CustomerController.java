@@ -31,31 +31,33 @@ import com.oracle.entity.DocumentData;
 import com.oracle.entity.Nominee;
 import com.oracle.entity.Program;
 import com.oracle.entity.pdfDocument;
+import com.oracle.secure.config.JwtTokenUtil;
 import com.oracle.service.CustomerService;
 @RestController
 @CrossOrigin
 public class CustomerController {
 
-	@Autowired
-	private CustomerDao custdao;
 	
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 	
 	@Autowired
 	private CustomerService customerService;
 	
 	@RequestMapping(value="/loandetails/{userName}" ,  method=RequestMethod.GET)
 	public List<ActiveLoans> getDetailsOfLoan(@PathVariable String userName ){
-		return custdao.getLoanDetails(userName);
+		return customerService.getLoanDetailsService(userName);
 	}
-@RequestMapping(value="/MyDetails/{userName}",method=RequestMethod.POST)
-public Customer getDetailsOfCustomer(@PathVariable String userName) {
-	 return customerService.getCustomerDetails(userName);
+@RequestMapping(value="/MyDetails/{token}",method=RequestMethod.POST)
+public Customer getDetailsOfCustomer(@PathVariable String token) {
+	String userName=jwtTokenUtil.getUsernameFromToken(token);
+	 return customerService.getCustomerDetailsService(userName);
 }
 	@RequestMapping(value="/SaveDetails/{userName}" ,  method=RequestMethod.POST)
 	//@RequestBody MultipartFile[] file
 	public String apply(@PathVariable String userName,@RequestBody Customer details) {
 		
-		return customerService.insertCustomerDetails(details,userName);
+		return customerService.insertCustomerDetailsService(details,userName);
 		//System.out.println("custobj:"+details.getCustomerData());
 //		customerService.insertNomineeDetails(details,userName);
 		//System.out.println("nomiobj:"+details.getNomineeData());
@@ -78,7 +80,7 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 	
 	@RequestMapping(value="/searchByLoanId/{userName}",method=RequestMethod.POST)
 	public ActiveLoans searchbyLoanId(@PathVariable String userName,@RequestBody int loanId ) {
-		String cust_id=customerService.getCustomerId(userName);
+		String cust_id=customerService.getCustomerIdService(userName);
 		DBConnection dbcon=new DBConnection();
 		Connection con=dbcon.connect();
 		String	sql="select * from ActiveLoans where loan_id=? ";
@@ -108,7 +110,7 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 	}
 	@RequestMapping(value="/searchByLoanType/{userName}",method=RequestMethod.POST)
 	public ActiveLoans searchbyLoanType(@PathVariable String userName,@RequestBody String type ) {
-		String cust_id=customerService.getCustomerId(userName);
+		String cust_id=customerService.getCustomerIdService(userName);
 		DBConnection dbcon=new DBConnection();
 		Connection con=dbcon.connect();
 		String	sql="select * from ActiveLoans where loan_type=? ";
@@ -139,7 +141,7 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 	
 	@RequestMapping(value="/searchByLoanDate/{userName}",method=RequestMethod.POST)//date
 	public ActiveLoans searchbyLoanDate(@PathVariable String userName,@RequestBody Date date ) {
-		String cust_id=customerService.getCustomerId(userName);
+		String cust_id=customerService.getCustomerIdService(userName);
 		DBConnection dbcon=new DBConnection();
 		Connection con=dbcon.connect();
 		String	sql="select * from ActiveLoans where start_date=? ";
@@ -169,77 +171,48 @@ public Customer getDetailsOfCustomer(@PathVariable String userName) {
 	}
 	@RequestMapping(value="/ApplyLoan/{userName}" ,  method=RequestMethod.POST)//success tested
    public String apply(@PathVariable String userName,@RequestBody Application data) {
-		String cust_id=customerService.getCustomerId(userName);
-		String res=customerService.saveApplicationData(cust_id,data);
+		String cust_id=customerService.getCustomerIdService(userName);
+		String res=customerService.saveApplicationDataService(cust_id,data);
 		if(res==null)
 				return "exists";
 		return res;
 	}
 	@RequestMapping(value="/GetApplications/{userName}" ,  method=RequestMethod.GET)//success tested
      public  List<Application> myapplications(@PathVariable String userName) {
-		String cust_id=customerService.getCustomerId(userName);
-		return customerService.getAppllicationsById(cust_id);
+		String cust_id=customerService.getCustomerIdService(userName);
+		return customerService.getAppllicationsByIdService(cust_id);
 
 		
 	}
 	@RequestMapping(value="/ApplicationClose/{applyid}" ,  method=RequestMethod.POST)//success tested
 	public void CloseApplication(@PathVariable String applyid) {
 		
-		customerService.cancelApplication(applyid);
+		customerService.cancelApplicationService(applyid);
 	}
 	
 	@RequestMapping(value="/CloseLoan/{loanId}" ,  method=RequestMethod.POST)
 	public long closeCustomerLoan(@PathVariable  int loanId) {
-		return customerService.closeLoan(loanId);
+		return customerService.closeLoanService(loanId);
 		
 	}
 	
 	//loan programs by type
 	@RequestMapping(value="/ProgramNames/{prgmName}",method=RequestMethod.GET)
 	public List<Program> getPrograms(@PathVariable String prgmName) {
-		return customerService.getProgramNames(prgmName);
+		return customerService.getProgramNamesService(prgmName);
 	}
 	@RequestMapping(value="/addNominee/{username}",method=RequestMethod.POST)
 	public String addNomineeDetails(@PathVariable String username,@RequestBody Nominee ndata) {
-		String userid=customerService.getCustomerId(username);
-		if(customerService.insertNomineeDetails(ndata, userid))		
+		String userid=customerService.getCustomerIdService(username);
+		if(customerService.insertNomineeDetailsService(ndata, userid))		
 		return "success";
 		return "fail";
 	}
 	
-	@RequestMapping(value="/AddDocument/{userName}",method=RequestMethod.POST, consumes = "multipart/form-data")
-	public boolean addDocument(@PathVariable String userName,@RequestBody DocumentData data) {
-		String cust_id=customerService.getCustomerId(userName);
-		return customerService.saveDocument(cust_id, data);
-//	public boolean addDocument(@RequestParam("files") List<MultipartFile> files) {
-//		DBConnection dbcon=new DBConnection();
-//		Connection con=dbcon.connect();
-//		String sql="insert into testpdf values(?)";
-//		System.out.println("entered");
-//		byte[] b=null;
-//		for(MultipartFile file:files) {
-//			System.out.println("entered for");
-//		try {
-//			b=file.getBytes();
-//			System.out.println("fileName"+file.getOriginalFilename());
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		try {
-//			
-//			PreparedStatement ps=con.prepareStatement(sql);
-//			ps.setBytes(1, b);
-//			ps.executeUpdate();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		}
-//		
-//		return true;
-//		
+	@RequestMapping(value="/AddDocument",method=RequestMethod.POST, consumes = "multipart/form-data")
+	public boolean addDocument( @RequestParam("files") List<MultipartFile> files,@RequestParam("applicationId") String applicationId) {
+		return customerService.saveDocumentService(files, applicationId);
+	
 		
 	}
 	

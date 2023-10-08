@@ -5,7 +5,6 @@ private String name;
 private long phoneNo;
 private String relationship;
 private String address;
-private byte[]  idProof;
 private String application_id;
 
 public String getApplication_id() {
@@ -38,11 +37,6 @@ public String getAddress() {
 public void setAddress(String address) {
 	this.address = address;
 }
-public byte[] getIdProof() {
-	return idProof;
-}
-public void setIdProof(byte[] idProof) {
-	this.idProof = idProof;
-}
+
 
 }

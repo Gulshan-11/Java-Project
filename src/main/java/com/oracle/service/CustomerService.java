@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.oracle.entity.ActiveLoans;
 import com.oracle.entity.Application;
 import com.oracle.entity.ClerkCustomer;
 import com.oracle.entity.CompleteCustomerDetails;
@@ -15,16 +16,18 @@ import com.oracle.entity.Program;
 import com.oracle.entity.pdfDocument;
 
 public interface CustomerService {
-	public String insertCustomerDetails(Customer cdata,String uName );
-	public boolean insertNomineeDetails(Nominee ndata,String uName);
-	public boolean saveDocument(String custId,DocumentData docData);
-	public boolean addNewCustomerDetails(ClerkCustomer cdata);
-	public String getCustomerId(String userName);
-	public String saveApplicationData(String custId ,Application data);
-	public List<Application> getAppllicationsById(String custId);
-	public boolean cancelApplication(String applicatuion_id);
-	public long closeLoan(int loanId);
-	public Customer getCustomerDetails(String userName);
-	public List<Program> getProgramNames(String prgmType);
+	public String insertCustomerDetailsService(Customer cdata,String uName );
+	public boolean insertNomineeDetailsService(Nominee ndata,String custId);
+	public boolean saveDocumentService(List<MultipartFile> files,String applicationId);
+	public boolean addNewCustomerDetailsService(ClerkCustomer cdata);
+	public String getCustomerIdService(String userName);
+	public String saveApplicationDataService(String custId ,Application data);
+	public List<Application> getAppllicationsByIdService(String custId);
+	public boolean cancelApplicationService(String applicatuion_id);
+	public long closeLoanService(int loanId);
+	public Customer getCustomerDetailsService(String userName);
+	public List<Program> getProgramNamesService(String prgmType);
+	List<ActiveLoans> getLoanDetailsService(String userName);
+
 	
 }

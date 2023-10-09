@@ -37,7 +37,7 @@ public void payEmi() {
             ps.setInt(3, emi);
             ps.executeQuery();           
 		}
-		sql="update activeloans set loan_status=0 where amount_paid=AMOUNT_SANCTIONED ";
+		sql="update activeloans set loan_status=0 where amount_paid >=AMOUNT_SANCTIONED ";
 		ps=con.prepareStatement(sql);
 		ps.executeUpdate();
 		System.out.println("updated");

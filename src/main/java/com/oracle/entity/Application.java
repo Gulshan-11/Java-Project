@@ -14,6 +14,21 @@ private String rejectReason;
 private float roi;
 private int tenure;
 
+public Application() {
+}
+public Application(String loanType, String applicationId, String programName, int applicationStatus,
+		long amountRequested, Date applicationDate, String rejectReason, float roi, int tenure) {
+	super();
+	this.loanType = loanType;
+	ApplicationId = applicationId;
+	this.programName = programName;
+	this.applicationStatus = applicationStatus;
+	AmountRequested = amountRequested;
+	this.applicationDate = applicationDate;
+	this.rejectReason = rejectReason;
+	this.roi = roi;
+	this.tenure = tenure;
+}
 public float getRoi() {
 	return roi;
 }

@@ -7,6 +7,21 @@ private String relationship;
 private String address;
 private String application_id;
 
+
+public Nominee() {
+}
+
+
+public Nominee(String name, long phoneNo, String relationship, String address, String application_id) {
+	super();
+	this.name = name;
+	this.phoneNo = phoneNo;
+	this.relationship = relationship;
+	this.address = address;
+	this.application_id = application_id;
+}
+
+
 public String getApplication_id() {
 	return application_id;
 }

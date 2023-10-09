@@ -8,8 +8,8 @@ import com.oracle.entity.Customer;
 
 public interface ClerkService {
 	public List<Application> getAllApplicationsService();
-	public Customer getgetCustomerDetailsByIdService(String CustomerId);
-	public ActiveLoans getLoanDetailsByIdService(int loanId);
-	public List<ActiveLoans> getLoanDetailsService();
+	public Customer getgetCustomerDetailsByIdService(String CustomerId);//tested
+	public ActiveLoans getLoanDetailsByIdService(int loanId);//tested
+	public List<ActiveLoans> getLoanDetailsService();//tested
 	
 }

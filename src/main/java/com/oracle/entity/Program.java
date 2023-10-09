@@ -9,6 +9,21 @@ public class Program {
 	private long max_tenure;
 	private float roi;
 	private String programDescription;
+	
+	public Program() {
+	}
+	public Program(String loanType, String programName, long min_amt, long max_amt, long min_tenure, long max_tenure,
+			float roi, String programDescription) {
+		super();
+		this.loanType = loanType;
+		this.programName = programName;
+		this.min_amt = min_amt;
+		this.max_amt = max_amt;
+		this.min_tenure = min_tenure;
+		this.max_tenure = max_tenure;
+		this.roi = roi;
+		this.programDescription = programDescription;
+	}
 	public String getLoanType() {
 		return loanType;
 	}

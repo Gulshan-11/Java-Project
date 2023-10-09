@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmiPayment {
 
-//@Scheduled(fixedRate=10000)
+@Scheduled(fixedRate=10000)
 public void payEmi() {
 	DBConnection dbcon=new DBConnection();
 	Connection con=dbcon.connect();
@@ -27,7 +27,7 @@ public void payEmi() {
 			ps.setInt(1,emi);
 			ps.setInt(2, loanId);
 			ps.executeUpdate();	
-			//System.out.println("while loop");
+			System.out.println("while loop");
             String transactionId = UUID.randomUUID().toString();
 
 			sql="insert into transactiondetails values(?,?,SYSTIMESTAMP,?)";

@@ -18,6 +18,7 @@ public boolean cancelApplication(String applicatuion_id);
 public long closeLoan(int loanId);
 public Customer getCustomerDetails(String userName);
 public List<Program> getProgramNames(String prgmType);
+public List<Transaction>getMyTransactions(long loanId);
 
 	
 }

@@ -22,6 +22,7 @@ import com.oracle.entity.Customer;
 import com.oracle.entity.DocumentData;
 import com.oracle.entity.Nominee;
 import com.oracle.entity.Program;
+import com.oracle.entity.Transaction;
 import com.oracle.secure.model.UserDto;
 @Component
 public class CustomerDaoimpl implements CustomerDao {
@@ -71,6 +72,13 @@ public class CustomerDaoimpl implements CustomerDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return loans;
 	}
@@ -111,6 +119,12 @@ public class CustomerDaoimpl implements CustomerDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "failed";
+		}finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return "success";
 	}
@@ -137,6 +151,12 @@ public class CustomerDaoimpl implements CustomerDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
+		}finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return true;
 	}
@@ -216,6 +236,12 @@ public class CustomerDaoimpl implements CustomerDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
+		}finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return true;
 	}
@@ -237,6 +263,12 @@ public class CustomerDaoimpl implements CustomerDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 			return custId;
@@ -277,6 +309,12 @@ public class CustomerDaoimpl implements CustomerDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		
@@ -311,6 +349,12 @@ public class CustomerDaoimpl implements CustomerDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		
@@ -331,6 +375,12 @@ public class CustomerDaoimpl implements CustomerDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
+		}finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return true;
@@ -362,6 +412,12 @@ public class CustomerDaoimpl implements CustomerDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	 return amountSanctioned-paidAmount;
 	}
@@ -400,6 +456,12 @@ public class CustomerDaoimpl implements CustomerDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return custData;
@@ -433,10 +495,43 @@ public class CustomerDaoimpl implements CustomerDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		
 		return prgmDetails;
+	}
+	
+
+	public List<Transaction> getMyTransactions(long loanId) {
+		// TODO Auto-generated method stub
+		DBConnection dbcon=new DBConnection();
+		Connection con=dbcon.connect();
+		List<Transaction> myTransactions=new ArrayList<Transaction>();
+		String sql="select * from transactiondetails where loan_id=?";
+		try {
+			PreparedStatement ps=con.prepareStatement(sql);
+			ps.setLong(1, loanId);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				Transaction t=new Transaction();
+				t.setLoanId(loanId);
+				t.setTimestamp(rs.getTimestamp("DATE_TIME"));
+				t.setAmountPaid(rs.getLong("AMOUNT_PAID"));
+				t.setTransactionId(rs.getString("TRANSACTION_ID"));
+				myTransactions.add(t);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return myTransactions;
 	}
 
    

@@ -23,6 +23,33 @@ private String city;
 private String state;
 private String country;
 private int pincode;
+public Customer() {}
+
+public Customer(String firstName, String lastName, String userName, String custId, Date dob, String email, long phoneNo,
+		String occupation, String emp_type, String gender, long income, int creditScore, Date regDate,
+		String accountStatus, String address, String city, String state, String country, int pincode) {
+	super();
+	this.firstName = firstName;
+	this.lastName = lastName;
+	this.userName = userName;
+	this.custId = custId;
+	this.dob = dob;
+	this.email = email;
+	this.phoneNo = phoneNo;
+	this.occupation = occupation;
+	this.emp_type = emp_type;
+	this.gender = gender;
+	this.income = income;
+	this.creditScore = creditScore;
+	this.regDate = regDate;
+	this.accountStatus = accountStatus;
+	this.address = address;
+	this.city = city;
+	this.state = state;
+	this.country = country;
+	this.pincode = pincode;
+}
+
 public String getFirstName() {
 	return firstName;
 }

@@ -18,6 +18,26 @@ private int emi;
 private int loan_status;
 //private 
 
+public ActiveLoans() {
+	super();
+}
+
+public ActiveLoans(long loanId, String type, String programeName, float roi, int tenure, long amountSanctioned,
+		Date date, long amountPaid, String approverName, long emisPaid, int emi, int loan_status) {
+	super();
+	this.loanId = loanId;
+	this.type = type;
+	this.programeName = programeName;
+	this.roi = roi;
+	this.tenure = tenure;
+	this.amountSanctioned = amountSanctioned;
+	this.date = date;
+	this.amountPaid = amountPaid;
+	this.approverName = approverName;
+	this.emisPaid = emisPaid;
+	this.emi = emi;
+	this.loan_status = loan_status;
+}
 
 public long getLoanId() {
 	return loanId;

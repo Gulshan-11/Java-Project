@@ -30,6 +30,7 @@ import com.oracle.entity.Customer;
 import com.oracle.entity.DocumentData;
 import com.oracle.entity.Nominee;
 import com.oracle.entity.Program;
+import com.oracle.entity.Transaction;
 import com.oracle.entity.pdfDocument;
 import com.oracle.exceptions.ApplicationException;
 import com.oracle.secure.config.JwtTokenUtil;
@@ -207,6 +208,11 @@ public Customer getDetailsOfCustomer(@PathVariable String token) {
 		return customerService.saveDocumentService(files, applicationId);
 	
 		
+	}
+	@RequestMapping(value="/MyTransactions/{loanId}",method=RequestMethod.POST)
+	public List<Transaction> getTransactions(@PathVariable long loanId){
+        return customerService.getMyTransactionsService(loanId);
+
 	}
 	
 

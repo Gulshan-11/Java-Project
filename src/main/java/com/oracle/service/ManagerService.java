@@ -13,7 +13,7 @@ public interface ManagerService {
          boolean approveLoanService(String userName,String appli_id);
          boolean rejectService(String userName,String appli_id,String rejectReason);
          Nominee getNomineeDetailsService(String applicationNum);
-         String getCustomerIdService(String applyId);
-         Customer getCustomerDetailsService(String custId);
+         String getCustomerIdService(String applyId);//tested
+         Customer getCustomerDetailsService(String custId);//tested
          List<DocumentRetrievalData> getDocumentDataService(String applicationId);
 }

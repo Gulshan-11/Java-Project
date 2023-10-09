@@ -14,6 +14,7 @@ import com.oracle.entity.ActiveLoans;
 import com.oracle.entity.Application;
 import com.oracle.entity.ClerkCustomer;
 import com.oracle.entity.Customer;
+import com.oracle.exceptions.ApplicationException;
 import com.oracle.service.ClerkService;
 import com.oracle.service.CustomerService;
 @RestController
@@ -73,6 +74,15 @@ public class ClerckController {
 	public List<ActiveLoans> getLoanDetails() {
 		return clerkService.getLoanDetailsService();
 	}
+	@RequestMapping(value="/ApplyMyLoan/{userName}" ,  method=RequestMethod.POST)//success tested
+	   public String apply(@PathVariable String userName,@RequestBody Application data) {
+			String cust_id=customerService.getCustomerIdService(userName);
+			if(cust_id==null) throw new ApplicationException("Customer Not Found");
+			String res=customerService.saveApplicationDataService(cust_id,data);
+			if(res==null)
+					return "exists";
+			return res;
+		}
 
 
 	

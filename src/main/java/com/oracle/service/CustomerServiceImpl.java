@@ -22,6 +22,7 @@ import com.oracle.entity.Customer;
 import com.oracle.entity.DocumentData;
 import com.oracle.entity.Nominee;
 import com.oracle.entity.Program;
+import com.oracle.entity.Transaction;
 import com.oracle.entity.pdfDocument;
 @Component
 public class CustomerServiceImpl implements CustomerService {
@@ -33,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
 	    }
 
 	
-
+	
 	
 	public boolean insertNomineeDetailsService(Nominee ndata, String userId) {
 		// TODO Auto-generated method stub
@@ -119,6 +120,15 @@ public List<Program> getProgramNamesService(String prgmType) {
 public List<ActiveLoans> getLoanDetailsService(String userName) {
 	// TODO Auto-generated method stub
 	return customerDao.getLoanDetails(userName);
+}
+
+
+
+
+@Override
+public List<Transaction> getMyTransactionsService(long loanId) {
+	// TODO Auto-generated method stub
+	return customerDao.getMyTransactions(loanId);
 }
 
 	
